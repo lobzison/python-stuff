@@ -2,6 +2,7 @@ import user43_ph1PvFBktU_10 as mycode
 import poc_simpletest
 import poc_ttt_provided as provided
 
+
 def count_cells(grid):
     cnt = 0
     summ = 0
@@ -9,9 +10,9 @@ def count_cells(grid):
         for cell in row:
             summ += cell
             cnt += 1
-    return (summ, cnt)       
+    return (summ, cnt)
 
-    
+
 testsute = poc_simpletest.TestSuite()
 
 a = provided.TTTBoard(3)
@@ -29,12 +30,12 @@ mycode.mc_trial(a, provided.PLAYERX)
 mycode.mc_trial(b, provided.PLAYERO)
 mycode.mc_trial(c, provided.PLAYERX)
 
-testsute.run_test(a.get_empty_squares(),[])
-testsute.run_test(b.get_empty_squares(),[])
-testsute.run_test(c.get_empty_squares(),[])
-testsute.run_test(count_cells(a_g),(0,3 ** 2))
-testsute.run_test(count_cells(b_g),(0,4 ** 2))
-testsute.run_test(count_cells(c_g),(0,5 ** 2))
+testsute.run_test(a.get_empty_squares(), [])
+testsute.run_test(b.get_empty_squares(), [])
+testsute.run_test(c.get_empty_squares(), [])
+testsute.run_test(count_cells(a_g), (0, 3 ** 2))
+testsute.run_test(count_cells(b_g), (0, 4 ** 2))
+testsute.run_test(count_cells(c_g), (0, 5 ** 2))
 
 a.move(0, 0, provided.PLAYERX)
 a.move(1, 0, provided.PLAYERX)
@@ -57,18 +58,17 @@ a.move(1, 2, provided.PLAYERO)
 a.move(2, 0, provided.PLAYERO)
 #a.move(1, 1, provided.PLAYERX)
 
-#FIX STRANGE ISSUE WITH NO WINS
+# FIX STRANGE ISSUE WITH NO WINS
 
 for i in range(50):
     c = a.clone()
     mc_trial(c, provided.PLAYERO)
-    mc_update_scores(b, c ,provided.PLAYERO)
+    mc_update_scores(b, c, provided.PLAYERO)
     if c.check_win() == provided.PLAYERO:
         print('WIN')
     print(c)
     for n in b:
         print(n)
-
 
 
 testsute.report_results()
