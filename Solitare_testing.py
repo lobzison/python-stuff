@@ -7,17 +7,18 @@ In GUI, you make ask computer AI to make move or click to attempt a legal move
 """
 import random
 
+
 class SolitaireMancala_T:
     """
     Simple class that implements Solitaire Mancala
     """
-    
+
     def __init__(self):
         """
         Create Mancala game with empty store and no houses
         """
         self._board = [0]
-    
+
     def set_board(self, configuration):
         """
         Take the list configuration of initial number of seeds for given houses
@@ -25,7 +26,7 @@ class SolitaireMancala_T:
         houses are number in ascending order from right to left
         """
         self._board = list(configuration)
-    
+
     def __str__(self):
         """
         Return string representation for Mancala board
@@ -33,7 +34,7 @@ class SolitaireMancala_T:
         temp = list(self._board)
         temp.reverse()
         return str(temp)
-    
+
     def get_num_seeds(self, house_num):
         """
         Return the number of seeds in given house on board
@@ -48,7 +49,7 @@ class SolitaireMancala_T:
             if self._board[idx] != 0:
                 return False
         return True
-    
+
     def is_legal_move(self, house_num):
         """
         Check whether a given move is legal
@@ -57,13 +58,12 @@ class SolitaireMancala_T:
         index_matches = self._board[house_num] == house_num
         return move_in_range and index_matches
 
-    
     def apply_move(self, house_num):
         """
         Move all of the stones from house to lower/left houses
         Last seed must be played in the store (house zero)
         """
-        if self.is_legal_move(house_num):  
+        if self.is_legal_move(house_num):
             for idx in range(house_num):
                 self._board[idx] += 1
             self._board[house_num] = 0
@@ -79,7 +79,7 @@ class SolitaireMancala_T:
             if self.is_legal_move(house_num):
                 return house_num
         return 0
-    
+
     def plan_moves(self):
         """
         Return a sequence (list) of legal moves based on the following heuristic: 
@@ -90,13 +90,14 @@ class SolitaireMancala_T:
         new_board = SolitaireMancala_T()
         new_board.set_board(self._board)
         move_list = []
-        next_move =  new_board.choose_move()
+        next_move = new_board.choose_move()
         while next_move != 0:
             new_board.apply_move(next_move)
             move_list.append(next_move)
             next_move = new_board.choose_move()
         return move_list
-    
+
+
 class SolitaireMancala:
 
     def __init__(self):
@@ -146,26 +147,26 @@ class SolitaireMancala:
                 self.apply_move(move)
                 moves.append(move)
         return moves
-    
 # Create tests to check the correctness of your code
+
 
 def test_mancala():
     """
     Test code for Solitaire Mancal a
     """
-    
     my_game = SolitaireMancala_T()
     my_game2 = SolitaireMancala()
-    config1 = [0, 0, 1, 1, 3, 5, 0, 2, 4, 0]    
-    my_game.set_board(config1)   
-    my_game2.set_board(config1) 
+    config1 = [0, 0, 1, 1, 3, 5, 0, 2, 4, 0]
+    my_game.set_board(config1)
+    my_game2.set_board(config1)
     print my_game.plan_moves()
     print my_game2.plan_moves()
+
 
 def test():
     my_game = SolitaireMancala_T()
     my_game2 = SolitaireMancala()
-    
+    my_game.apply_move
     while True:
         config = [0]
         gen_config(config)
@@ -177,12 +178,13 @@ def test():
             print config
             break
 
+
 def gen_config(config):
     for ln in range(random.randrange(9)):
         config.append(random.randrange(10))
     return config
+
+
 test()
 
-#test  
-
-                  
+# test
