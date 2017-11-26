@@ -151,7 +151,7 @@ class SolitaireMancala:
 
 def test_mancala():
     """
-    Test code for Solitaire Mancala
+    Test code for Solitaire Mancal a
     """
     
     my_game = SolitaireMancala_T()
@@ -182,5 +182,7 @@ def gen_config(config):
         config.append(random.randrange(10))
     return config
 test()
-#print(gen_config([0]))                  
+
+#test  
+
                   
