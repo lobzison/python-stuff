@@ -27,6 +27,6 @@ test.run_suite(ytz.gen_all_holds)
 
 my_suite.run_test(ytz.expected_value((2,), 6, 1), 4.0)
 
-my_suite.run_test(round(ytz.expected_value((1, 2, 3, 4, 5), 6, 1),1), 6.7)
+my_suite.run_test(round(ytz.expected_value((1, 2, 3, 4, 5), 6, 1), 1), 6.7)
 
 my_suite.run_test(ytz.expected_value(tuple([]), 6, 5), 3.5)
