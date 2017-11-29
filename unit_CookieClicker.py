@@ -17,5 +17,10 @@ my_test.wait(100)
 my_suite.run_test(my_test.get_cookies(), 111)
 
 
+my_test.buy_item("Test item", 100, 1)
+my_suite.run_test(my_test.get_cookies(), 11)
+my_suite.run_test(my_test.get_cps(), 2)
+my_suite.run_test(my_test.get_history(), [(0.0, None, 0.0, 0.0), (111.0, 'Test item', 100, 111.0)])
+
 my_suite.report_results()
 print(str(my_test))

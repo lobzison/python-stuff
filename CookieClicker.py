@@ -28,8 +28,8 @@ class ClickerState:
         """
         Return human readable state
         """
-        res = """Total cookies:%f, Current cookies:%f,
-               Current time:%f, Current CPS:%f""" % (
+        res = ('Total cookies:%f, Current cookies:%f,'
+               'Current time:%f, Current CPS:%f') % (
             self.total_cookies, self.current_cookies,
             self.current_time, self.current_cps)
         return res
@@ -104,7 +104,13 @@ class ClickerState:
 
         Should do nothing if you cannot afford the item
         """
-        pass
+        if cost <= self.current_cookies:
+            self.current_cookies -= cost
+            self.current_cps += additional_cps
+            self.history.append((self.current_time, item_name,
+                                 cost, self.total_cookies))
+        else:
+            return
 
 
 def simulate_clicker(build_info, duration, strategy):
