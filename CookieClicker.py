@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import poc_clicker_provided as provided
 
 # Constants
-SIM_TIME = 100.0
+SIM_TIME = 10000000000.0
 
 
 class ClickerState:
@@ -28,10 +28,10 @@ class ClickerState:
         """
         Return human readable state
         """
-        res = ('Total cookies:%f, Current cookies:%f,'
-               'Current time:%f, Current CPS:%f') % (
-            self.total_cookies, self.current_cookies,
-            self.current_time, self.current_cps)
+        res = ('Total cookies: %f, Current cookies: %f,'
+               'Current time: %f, Current CPS: %f') % (
+            round(self.total_cookies), round(self.current_cookies),
+            round(self.current_time), self.current_cps)
         return res
 
     def get_cookies(self):
@@ -57,7 +57,7 @@ class ClickerState:
 
         Should return a float
         """
-        return self.time
+        return self.current_time
 
     def get_history(self):
         """
@@ -119,6 +119,26 @@ def simulate_clicker(build_info, duration, strategy):
     duration with the given strategy.  Returns a ClickerState
     object corresponding to the final state of the game.
     """
+    game = ClickerState()
+    info = build_info.clone()
+    while game.get_time() < duration:
+        time_left = duration - game.get_time()
+        strtg = strategy(game.get_cookies(), game.get_cps(),
+                         game.get_history(), time_left, info)
+        if strtg is None:
+            break
+        time_to_w8 = game.time_until(info.get_cost(strtg))
+        if game.get_time() + time_to_w8 > duration:
+            break
+        game.wait(time_to_w8)
+        game.buy_item(strtg, info.get_cost(strtg), info.get_cps(strtg))
+        info.update_item(strtg)
+
+    time = duration - game.get_time()
+    game.wait(time)
+    # for line in game.get_history():
+    #    print line
+    return game
 
     # Replace with your code
     return ClickerState()
@@ -190,7 +210,7 @@ def run():
     """
     Run the simulator.
     """
-    run_strategy("Cursor", SIM_TIME, strategy_cursor_broken)
+    run_strategy("Cursor", SIM_TIME, strategy_cheap)
 
     # Add calls to run_strategy to run additional strategies
     # run_strategy("Cheap", SIM_TIME, strategy_cheap)
