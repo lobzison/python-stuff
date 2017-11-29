@@ -138,10 +138,11 @@ def simulate_clicker(build_info, duration, strategy):
     game.wait(time)
     strtg = strategy(game.get_cookies(), game.get_cps(),
                      game.get_history(), time_left, info)
-    # while strtg is not None No fucking idea why this is infinte loop
-    for _ in range(1000):
+    while strtg is not None: # No fucking idea why this is infinte loop
+    #for _ in range(1000):
         strtg = strategy(game.get_cookies(), game.get_cps(),
-                         game.get_history(), time_left, info)
+                         game.get_history(), 0, info)
+        c_cookies = game.get_cookies()
         if strtg is None:
             break
         game.buy_item(strtg, info.get_cost(strtg), info.get_cps(strtg))
@@ -262,16 +263,3 @@ def run_strategy(strategy_name, time, strategy):
     # simpleplot.plot_lines(strategy_name, 1000, 400, 'Time', 'Total Cookies', [history], True)
 
 
-def run():
-    """
-    Run the simulator.
-    """
-    run_strategy("Cursor", SIM_TIME, strategy_best)
-
-    # Add calls to run_strategy to run additional strategies
-    # run_strategy("Cheap", SIM_TIME, strategy_cheap)
-    # run_strategy("Expensive", SIM_TIME, strategy_expensive)
-    # run_strategy("Best", SIM_TIME, strategy_best)
-
-
-run()
