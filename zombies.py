@@ -42,6 +42,12 @@ class Apocalypse(poc_grid.Grid):
         else:
             self._human_list = []
 
+    def __str__(self):
+        ans = poc_grid.Grid.__str__(self)
+        ans += "\nHumans:" + str(self._human_list)
+        ans += "\nZombies:" + str(self._zombie_list)
+        return ans
+
     def clear(self):
         """
         Set cells in obstacle grid to be empty
@@ -55,7 +61,8 @@ class Apocalypse(poc_grid.Grid):
         """
         Add zombie to the zombie list
         """
-        self._zombie_list.append((row, col))
+        if (row, col) not in self._zombie_list:
+            self._zombie_list.append((row, col))
 
     def num_zombies(self):
         """
@@ -76,7 +83,8 @@ class Apocalypse(poc_grid.Grid):
         """
         Add human to the human list
         """
-        self._human_list.append((row, col))
+        if (row, col) not in self._human_list:
+            self._human_list.append((row, col))
 
     def num_humans(self):
         """
@@ -101,7 +109,7 @@ class Apocalypse(poc_grid.Grid):
         hgt = self.get_grid_height()
         wdt = self.get_grid_width()
         visited = poc_grid.Grid(hgt, wdt)
-        distance_field = [[hgt * hgt for _ in range(wdt)] for _ in range(hgt)]
+        distance_field = [[hgt * wdt for _ in range(wdt)] for _ in range(hgt)]
         boundary = poc_queue.Queue()
 
         if entity_type == ZOMBIE:
@@ -133,14 +141,35 @@ class Apocalypse(poc_grid.Grid):
         Function that moves humans away from zombies, diagonal moves
         are allowed
         """
-        pass
+        for idx in range(self.num_humans()):
+            hooman = self._human_list[idx]
+            neighbours = self.eight_neighbors(hooman[0], hooman[1])
+            max_nei = [[zombie_distance_field[nei[0]][nei[1]], nei]
+                       for nei in neighbours
+                       if self.is_empty(nei[0], nei[1])]
+            max_nei = max([[0, hooman]] + max_nei)
+            max_nei = max_nei[1]
+            self._human_list[idx] = max_nei
 
     def move_zombies(self, human_distance_field):
         """
         Function that moves zombies towards humans, no diagonal moves
         are allowed
         """
-        pass
+        for idx in range(self.num_zombies()):
+            zombie = self._zombie_list[idx]
+            if human_distance_field[zombie[0]][zombie[1]] != 0:
+                neighbours = self.four_neighbors(zombie[0], zombie[1])
+                min_nei = [[human_distance_field[nei[0]][nei[1]], nei]
+                           for nei in neighbours
+                           if self.is_empty(nei[0], nei[1])]
+
+                min_nei = [[self.get_grid_height() * self.get_grid_width(),
+                            zombie]] + min_nei
+                print min_nei
+                min_nei = min(min_nei)
+                min_nei = min_nei[1]
+                self._zombie_list[idx] = min_nei
 
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
