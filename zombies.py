@@ -55,7 +55,7 @@ class Apocalypse(poc_grid.Grid):
         """
         Add zombie to the zombie list
         """
-        self._zombie_list.append([row, col])
+        self._zombie_list.append((row, col))
 
     def num_zombies(self):
         """
@@ -76,20 +76,21 @@ class Apocalypse(poc_grid.Grid):
         """
         Add human to the human list
         """
-        pass
+        self._human_list.append((row, col))
 
     def num_humans(self):
         """
         Return number of humans
         """
-        return 0
+        return len(self._human_list)
 
     def humans(self):
         """
         Generator that yields the humans in the order they were added.
         """
         # replace with an actual generator
-        return
+        for human in self._human_list:
+            yield human
 
     def compute_distance_field(self, entity_type):
         """
@@ -97,7 +98,35 @@ class Apocalypse(poc_grid.Grid):
         Distance at member of entity_list is zero
         Shortest paths avoid obstacles and use four-way distances
         """
-        return
+        hgt = self.get_grid_height()
+        wdt = self.get_grid_width()
+        visited = poc_grid.Grid(hgt, wdt)
+        distance_field = [[hgt * hgt for _ in range(wdt)] for _ in range(hgt)]
+        boundary = poc_queue.Queue()
+
+        if entity_type == ZOMBIE:
+            entities = self.zombies
+        else:
+            entities = self.humans
+
+        for enitity in entities():
+            boundary.enqueue(enitity)
+        for item in boundary:
+            visited.set_full(item[0], item[1])
+            distance_field[item[0]][item[1]] = 0
+
+        while len(boundary) > 0:
+            current_cell = boundary.dequeue()
+            for neighbour in self.four_neighbors(current_cell[0],
+                                                 current_cell[1]):
+                if (visited.is_empty(neighbour[0], neighbour[1]) and
+                        self.is_empty(neighbour[0], neighbour[1])):
+
+                    visited.set_full(neighbour[0], neighbour[1])
+                    boundary.enqueue(neighbour)
+                    c_value = distance_field[current_cell[0]][current_cell[1]]
+                    distance_field[neighbour[0]][neighbour[1]] = c_value + 1
+        return distance_field
 
     def move_humans(self, zombie_distance_field):
         """
@@ -116,17 +145,4 @@ class Apocalypse(poc_grid.Grid):
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
 
-# poc_zombie_gui.run_gui(Apocalypse(30, 40))
-
-
-new = Apocalypse(2, 2, [[1, 1]])
-print new
-new.clear()
-print new
-new.add_zombie(0, 0)
-print new.num_zombies()
-new.add_zombie(1, 0)
-print new.num_zombies()
-new.add_zombie(0, 1)
-for zombie in new.zombies():
-    print zombie
+#poc_zombie_gui.run_gui(Apocalypse(30, 40))
