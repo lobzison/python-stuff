@@ -108,21 +108,29 @@ class Apocalypse(poc_grid.Grid):
         """
         hgt = self.get_grid_height()
         wdt = self.get_grid_width()
+        # visited -grid of the same size, full = visited
         visited = poc_grid.Grid(hgt, wdt)
+        # distance field = nested list of the same size, default value = max
         distance_field = [[hgt * wdt for _ in range(wdt)] for _ in range(hgt)]
+        # boundary - queue with starting cells
         boundary = poc_queue.Queue()
 
         if entity_type == ZOMBIE:
             entities = self.zombies
         else:
             entities = self.humans
-
+        # setting up initial boundary, visited and distance field
         for enitity in entities():
             boundary.enqueue(enitity)
         for item in boundary:
             visited.set_full(item[0], item[1])
             distance_field[item[0]][item[1]] = 0
 
+        # for ecah cell in boundary:
+        # deque in form boundary, take the dourn neighbours
+        # if neighbour os not visited and is not full - add to visited
+        # add it to boundary, set the vaule in distance field
+        # to +1 from value of curent cell in distance field
         while len(boundary) > 0:
             current_cell = boundary.dequeue()
             for neighbour in self.four_neighbors(current_cell[0],
@@ -141,6 +149,7 @@ class Apocalypse(poc_grid.Grid):
         Function that moves humans away from zombies, diagonal moves
         are allowed
         """
+        # finiding the max of 8 neighbours and itself
         for idx in range(self.num_humans()):
             hooman = self._human_list[idx]
             neighbours = self.eight_neighbors(hooman[0], hooman[1])
@@ -156,6 +165,7 @@ class Apocalypse(poc_grid.Grid):
         Function that moves zombies towards humans, no diagonal moves
         are allowed
         """
+        # finiding the min of 4 neighbours and itself
         for idx in range(self.num_zombies()):
             zombie = self._zombie_list[idx]
             if human_distance_field[zombie[0]][zombie[1]] != 0:
@@ -171,7 +181,5 @@ class Apocalypse(poc_grid.Grid):
                 min_nei = min_nei[1]
                 self._zombie_list[idx] = min_nei
 
-# Start up gui for simulation - You will need to write some code above
-# before this will work without errors
 
-#poc_zombie_gui.run_gui(Apocalypse(30, 40))
+# poc_zombie_gui.run_gui(Apocalypse(30, 40))
