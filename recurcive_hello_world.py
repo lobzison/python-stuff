@@ -70,3 +70,29 @@ print "Computed:", "\"" + remove_x("xxx") + "\"", "Expected: \"\""
 print "Computed:", "\"" + remove_x("dxoxg") + "\"", "Expected: \"dog\""\
 
 
+
+def insert_x(my_string):
+    if len(my_string) <= 1:
+        return my_string
+    else:
+        return my_string[0] + 'x' + insert_x(my_string[1:])
+
+
+print "Computed:", "\"" + insert_x("") + "\"", "Expected: \"\""
+print "Computed:", "\"" + insert_x("c") + "\"", "Expected: \"c\""
+print "Computed:", "\"" + insert_x("pig") + "\"", "Expected: \"pxixg\""
+print "Computed:", "\"" + insert_x("catdog") + "\"", "Expected: \"cxaxtxdxoxg\""
+
+
+def list_reverse(my_list):
+    if len(my_list) <= 1:
+        return my_list
+    else:
+        return [my_list[-1]] + list_reverse(my_list[:-1])
+
+
+print list_reverse([1, 2, 3, 4, 5])
+print "Computed:", list_reverse([]), "Expected: []"
+print "Computed:", list_reverse([1]), "Expected: [1]"
+print "Computed:", list_reverse([1, 2, 3]), "Expected: [3, 2, 1]"
+print "Computed:", list_reverse([2, 3, 1]), "Expected: [1, 3, 2]"
