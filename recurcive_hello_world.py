@@ -96,3 +96,38 @@ print "Computed:", list_reverse([]), "Expected: []"
 print "Computed:", list_reverse([1]), "Expected: [1]"
 print "Computed:", list_reverse([1, 2, 3]), "Expected: [3, 2, 1]"
 print "Computed:", list_reverse([2, 3, 1]), "Expected: [1, 3, 2]"
+
+counter = 0
+
+
+def fib(num):
+    global counter
+    counter += 1
+    if num == 0:
+        return 0
+    elif num == 1:
+        return 1
+    else:
+        return fib(num - 1) + fib(num - 2)
+
+
+for i in range(10):
+    counter = 0
+    print fib(i), i, counter
+
+
+def memoized_fib(num, memo_dict):
+    global counter
+    counter += 1
+    if num in memo_dict:
+        return memo_dict[num]
+    else:
+        sum1 = memoized_fib(num - 1, memo_dict)
+        sum2 = memoized_fib(num - 2, memo_dict)
+        memo_dict[num] = sum1 + sum2
+        return sum1 + sum2
+
+
+for i in range(10):
+    counter = 0
+    print memoized_fib(i, {0: 0, 1: 1}), i, counter
