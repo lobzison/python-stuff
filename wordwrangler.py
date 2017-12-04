@@ -126,8 +126,25 @@ def gen_all_strings(word):
 
     This function should be recursive.
     """
-    return []
-
+    
+    if len(word) == 0:
+        return [""]
+    if len(word) == 1:
+        return ["", word]
+    # splitting the string into first character and rest
+    # generate all perms on rest
+    # for each perm put first letter in every possible plase
+    first = word[:1]
+    rest = word[1:]
+    print first, rest
+    rest_strings = gen_all_strings(rest)
+    new_strings = []
+    for string in rest_strings:
+        for index in range(len(string) + 1):
+            new_string = string[:index] + first + string[index:]
+            new_strings.append(new_string)
+    return new_strings + rest_strings
+    
 # Function to load words from a file
 
 def load_words(filename):
@@ -150,30 +167,30 @@ def run():
 
 # Uncomment when you are ready to try the game
 # run()
-tes_list1 = []
-tes_list2 = [3]
-tes_list3 = [1,2]
-tes_list4 = [1,2,3,4,5,6]
-tes_list5 = [1,2,3,4,5,5]
-tes_list6 = [1,1,3,4,5,6]
-tes_list7 = [1,2,3,3,3,3]
-
-
-test_list1 = []
-test_list2 = [1, 19, 20, 21]
-test_list3 = [19, 38, 98]
-test_list4 = [1, 19, 19,  20, 21]
-test_list5 = [19, 19, 38, 98]
-test_list5 = [3, 4, 7, 30]
-
-unsorted_list1 = [6, 1, 25, 12, 4, 1, 2, 90, 12]
-
-print remove_duplicates(tes_list7)
-
-print intersect(test_list3, test_list4)
-
-print merge(test_list2, test_list5)
-
-print merge_sort([2, 3, 1])
-    
-    
+#tes_list1 = []
+#tes_list2 = [3]
+#tes_list3 = [1,2]
+#tes_list4 = [1,2,3,4,5,6]
+#tes_list5 = [1,2,3,4,5,5]
+#tes_list6 = [1,1,3,4,5,6]
+#tes_list7 = [1,2,3,3,3,3]
+#
+#
+#test_list1 = []
+#test_list2 = [1, 19, 20, 21]
+#test_list3 = [19, 38, 98]
+#test_list4 = [1, 19, 19,  20, 21]
+#test_list5 = [19, 19, 38, 98]
+#test_list5 = [3, 4, 7, 30]
+#
+#unsorted_list1 = [6, 1, 25, 12, 4, 1, 2, 90, 12]
+#
+#print remove_duplicates(tes_list7)
+#
+#print intersect(test_list3, test_list4)
+#
+#print merge(test_list2, test_list5)
+#
+#print merge_sort([2, 3, 1])
+#print len("a")
+print gen_all_strings("abc")
