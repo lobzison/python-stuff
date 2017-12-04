@@ -5,6 +5,7 @@ Student code for Word Wrangler game
 import urllib2
 import codeskulptor
 import poc_wrangler_provided as provided
+import math
 
 WORDFILE = "assets_scrabble_words3.txt"
 
@@ -71,8 +72,32 @@ def merge(list1, list2):
     either list1 or list2.
 
     This function can be iterative.
-    """   
-    return []
+    """
+    res = []
+    if (list1 == [] or list2 == []):
+        return list1 + list2
+        print('agagag')
+    else:
+        index_1 = 0
+        index_2 = 0
+        while index_1 < len(list1) and index_2 < len(list2):
+            if list1[index_1] == list2[index_2]:
+                res.append(list1[index_1])
+                res.append(list2[index_2])
+                index_1 += 1
+                index_2 += 1
+            elif list1[index_1] > list2[index_2]:
+                res.append(list2[index_2])
+                index_2 += 1
+            else:
+                res.append(list1[index_1])
+                index_1 += 1
+                
+        if len(list1) >= index_1:
+            res += list1[index_1:]
+        if len(list2) >= index_2:
+            res += list2[index_2:]
+    return res
                 
 def merge_sort(list1):
     """
@@ -82,8 +107,14 @@ def merge_sort(list1):
 
     This function should be recursive.
     """
-    return []
-
+    if len(list1) <= 1:
+        return list1
+    else:
+        mid_index = int(math.ceil((len(list1) / 2)))
+        first_list, second_list = list1[:mid_index], list1[mid_index:]
+        first_list, second_list = merge_sort(first_list), merge_sort(second_list)
+        return merge(first_list, second_list)
+    
 # Function to generate all strings for the word wrangler game
 
 def gen_all_strings(word):
@@ -128,14 +159,22 @@ tes_list5 = [1,2,3,4,5,5]
 tes_list6 = [1,1,3,4,5,6]
 tes_list7 = [1,2,3,3,3,3]
 
+
 test_list1 = []
-test_list1 = [1, 19, 20, 21]
-test_list2 = [19, 38, 98]
-test_list3 = [1, 19,  20, 21]
-test_list4 = [19, 38, 98]
+test_list2 = [1, 19, 20, 21]
+test_list3 = [19, 38, 98]
+test_list4 = [1, 19, 19,  20, 21]
+test_list5 = [19, 19, 38, 98]
+test_list5 = [3, 4, 7, 30]
+
+unsorted_list1 = [6, 1, 25, 12, 4, 1, 2, 90, 12]
 
 print remove_duplicates(tes_list7)
 
-print intersect(test_list2, test_list1)
+print intersect(test_list3, test_list4)
+
+print merge(test_list2, test_list5)
+
+print merge_sort([2, 3, 1])
     
     
