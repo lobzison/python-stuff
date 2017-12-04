@@ -3,8 +3,8 @@ Student code for Word Wrangler game
 """
 
 import urllib2
-import codeskulptor
-import poc_wrangler_provided as provided
+#import codeskulptor
+#import poc_wrangler_provided as provided
 import math
 
 WORDFILE = "assets_scrabble_words3.txt"
@@ -37,6 +37,7 @@ def remove_duplicates(list1):
                 index += 1
     return res
 
+
 def intersect(list1, list2):
     """
     Compute the intersection of two sorted lists.
@@ -63,6 +64,7 @@ def intersect(list1, list2):
     return res
 
 # Functions to perform merge sort
+
 
 def merge(list1, list2):
     """
@@ -91,13 +93,14 @@ def merge(list1, list2):
             else:
                 res.append(list1[index_1])
                 index_1 += 1
-                
+
         if len(list1) >= index_1:
             res += list1[index_1:]
         if len(list2) >= index_2:
             res += list2[index_2:]
     return res
-                
+
+
 def merge_sort(list1):
     """
     Sort the elements of list1.
@@ -111,10 +114,12 @@ def merge_sort(list1):
     else:
         mid_index = int(math.ceil((len(list1) / 2)))
         first_list, second_list = list1[:mid_index], list1[mid_index:]
-        first_list, second_list = merge_sort(first_list), merge_sort(second_list)
+        first_list, second_list = merge_sort(
+            first_list), merge_sort(second_list)
         return merge(first_list, second_list)
-    
+
 # Function to generate all strings for the word wrangler game
+
 
 def gen_all_strings(word):
     """
@@ -126,7 +131,7 @@ def gen_all_strings(word):
 
     This function should be recursive.
     """
-    
+
     if len(word) == 0:
         return [""]
     if len(word) == 1:
@@ -136,7 +141,6 @@ def gen_all_strings(word):
     # for each perm put first letter in every possible plase
     first = word[:1]
     rest = word[1:]
-    print first, rest
     rest_strings = gen_all_strings(rest)
     new_strings = []
     for string in rest_strings:
@@ -144,8 +148,9 @@ def gen_all_strings(word):
             new_string = string[:index] + first + string[index:]
             new_strings.append(new_string)
     return new_strings + rest_strings
-    
+
 # Function to load words from a file
+
 
 def load_words(filename):
     """
@@ -155,15 +160,17 @@ def load_words(filename):
     """
     return []
 
+
 def run():
     """
     Run game.
     """
     words = load_words(WORDFILE)
-    wrangler = provided.WordWrangler(words, remove_duplicates, 
-                                     intersect, merge_sort, 
+    wrangler = provided.WordWrangler(words, remove_duplicates,
+                                     intersect, merge_sort,
                                      gen_all_strings)
     provided.run_game(wrangler)
+
 
 # Uncomment when you are ready to try the game
 # run()
@@ -185,12 +192,12 @@ def run():
 #
 #unsorted_list1 = [6, 1, 25, 12, 4, 1, 2, 90, 12]
 #
-#print remove_duplicates(tes_list7)
+# print remove_duplicates(tes_list7)
 #
-#print intersect(test_list3, test_list4)
+# print intersect(test_list3, test_list4)
 #
-#print merge(test_list2, test_list5)
+# print merge(test_list2, test_list5)
 #
-#print merge_sort([2, 3, 1])
-#print len("a")
+# print merge_sort([2, 3, 1])
+# print len("a")
 print gen_all_strings("abc")
