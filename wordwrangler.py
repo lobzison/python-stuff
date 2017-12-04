@@ -76,7 +76,6 @@ def merge(list1, list2):
     res = []
     if (list1 == [] or list2 == []):
         return list1 + list2
-        print('agagag')
     else:
         index_1 = 0
         index_2 = 0
