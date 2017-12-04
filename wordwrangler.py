@@ -3,8 +3,8 @@ Student code for Word Wrangler game
 """
 
 import urllib2
-#import codeskulptor
-#import poc_wrangler_provided as provided
+import codeskulptor
+import poc_wrangler_provided as provided
 import math
 
 WORDFILE = "assets_scrabble_words3.txt"
@@ -200,4 +200,4 @@ def run():
 #
 # print merge_sort([2, 3, 1])
 # print len("a")
-print gen_all_strings("abc")
+#print gen_all_strings("abc")
