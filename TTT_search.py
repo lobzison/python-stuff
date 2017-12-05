@@ -2,7 +2,7 @@
 Mini-max Tic-Tac-Toe Player
 """
 
-# import poc_ttt_gui
+import poc_ttt_gui
 import poc_ttt_provided as provided
 
 # Set timeout, as mini-max can take a long time
@@ -14,17 +14,38 @@ SCORES = {provided.PLAYERX: 1,
           provided.DRAW: 0,
           provided.PLAYERO: -1}
 
-
 def mm_move(board, player):
     """
     Make a move on the board.
-
+    
     Returns a tuple with two elements.  The first element is the score
     of the given board and the second element is the desired move as a
     tuple, (row, col).
     """
-    return 0, (-1, -1)
+    if board.check_win() is not None:
+        return SCORES[board.check_win()], (-1, -1)
+    else:
+        possible_boards = []
+        for cell in board.get_empty_squares():
+            temp_board = board.clone()
+            temp_board.move(cell[0],cell[1], player)
+            
+            if temp_board.check_win() is not None:
+                return SCORES[temp_board.check_win()], cell
+            possible_boards.append((temp_board, cell))
+        win_move = max(mm_move(one_board[0], player)
+                       for one_board in possible_boards)
 
+        if player == provided.PLAYERX:
+            player = provided.PLAYERO
+        else:
+            player = provided.PLAYERX
+            
+        for item in [mm_move(one_board[0], player) for one_board in possible_boards]:
+            print item
+        for item in possible_boards:
+            print item[0], item[1]
+        return win_move[0], win_move[1]
 
 def move_wrapper(board, player, trials):
     """
@@ -40,5 +61,15 @@ def move_wrapper(board, player, trials):
 # Both should be commented out when you submit for
 # testing to save time.
 
-# provided.play_game(move_wrapper, 1, False)
+# provided.play_game(move_wrapper, 1, False)        
 # poc_ttt_gui.run_gui(3, provided.PLAYERO, move_wrapper, 1, False)
+
+brd = [[provided.PLAYERO, provided.PLAYERX, provided.PLAYERX],
+       [provided.EMPTY, provided.PLAYERO, provided.PLAYERO],
+       [provided.EMPTY, provided.EMPTY, provided.EMPTY]]
+
+my_board = provided.TTTBoard(3, board = brd)
+print my_board
+print my_board.get_empty_squares()
+
+print mm_move(my_board, provided.PLAYERX)
