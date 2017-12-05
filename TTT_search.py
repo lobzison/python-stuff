@@ -25,28 +25,24 @@ def mm_move(board, player):
     if board.check_win() is not None:
         return SCORES[board.check_win()], (-1, -1)
     else:
-        possible_boards = []
+        possible_scores = []
         for cell in board.get_empty_squares():
-            temp_board = board.clone()
-            temp_board.move(cell[0],cell[1], player)
-            
-            if temp_board.check_win() is not None:
-                return SCORES[temp_board.check_win()], cell
-            possible_boards.append((temp_board, cell))
-        win_move = max(mm_move(one_board[0], player)
-                       for one_board in possible_boards)
-
+            new_board = board.clone()
+            new_board.move(cell[0], cell[1], player)
+            if new_board.check_win() is not None:
+                possible_scores.append((SCORES[new_board.check_win()], cell))
+            else:
+                if player == provided.PLAYERX:
+                    opposite_player = provided.PLAYERO
+                else:
+                    opposite_player = provided.PLAYERX
+                possible_scores.append((mm_move(new_board, opposite_player)[0], cell))
         if player == provided.PLAYERX:
-            player = provided.PLAYERO
+            win_move = max(possible_scores)
         else:
-            player = provided.PLAYERX
-            
-        for item in [mm_move(one_board[0], player) for one_board in possible_boards]:
-            print item
-        for item in possible_boards:
-            print item[0], item[1]
+            win_move = min(possible_scores)
         return win_move[0], win_move[1]
-
+            
 def move_wrapper(board, player, trials):
     """
     Wrapper to allow the use of the same infrastructure that was used
@@ -64,12 +60,13 @@ def move_wrapper(board, player, trials):
 # provided.play_game(move_wrapper, 1, False)        
 # poc_ttt_gui.run_gui(3, provided.PLAYERO, move_wrapper, 1, False)
 
-brd = [[provided.PLAYERO, provided.PLAYERX, provided.PLAYERX],
-       [provided.EMPTY, provided.PLAYERO, provided.PLAYERO],
-       [provided.EMPTY, provided.EMPTY, provided.EMPTY]]
-
-my_board = provided.TTTBoard(3, board = brd)
-print my_board
-print my_board.get_empty_squares()
-
-print mm_move(my_board, provided.PLAYERX)
+#brd = [[provided.PLAYERO, provided.PLAYERO, provided.PLAYERX],
+#       [provided.PLAYERX, provided.PLAYERX, provided.EMPTY],
+#       [provided.PLAYERO, provided.EMPTY, provided.PLAYERO]]
+#
+#
+#my_board = provided.TTTBoard(3, board = brd)
+#print my_board
+#print my_board.get_empty_squares()
+#
+#print mm_move(my_board, provided.PLAYERX)
