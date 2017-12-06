@@ -4,7 +4,8 @@ Note that solved configuration has the blank (zero) tile in upper left
 Use the arrows key to swap this tile with its neighbors
 """
 
-import poc_fifteen_gui
+#import poc_fifteen_gui
+
 
 class Puzzle:
     """
@@ -22,7 +23,7 @@ class Puzzle:
                        for col in range(self._width)]
                       for row in range(self._height)]
 
-        if initial_grid != None:
+        if initial_grid is not None:
             for row in range(puzzle_height):
                 for col in range(puzzle_width):
                     self._grid[row][col] = initial_grid[row][col]
@@ -83,7 +84,7 @@ class Puzzle:
         """
         Locate the current position of the tile that will be at
         position (solved_row, solved_col) when the puzzle is solved
-        Returns a tuple of two integers        
+        Returns a tuple of two integers
         """
         solved_value = (solved_col + self._width * solved_row)
 
@@ -131,8 +132,20 @@ class Puzzle:
         at the given position in the bottom rows of the puzzle (target_row > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        zero_in_pos = self.get_number(target_row, target_col) == 0
+        lower_rows = True
+        righter_cells = True
+        if target_row != self.get_height() - 1:
+            for rows in range(target_row + 1, self.get_height()):
+                for cols in range(self.get_width()):
+                    check = self.current_position(rows, cols) == (rows, cols)
+                    lower_rows = lower_rows and check
+        if target_col != self.get_width() - 1:
+            for cols in range(target_col, self.get_width()):
+                check = self.current_position(target_row, cols) == (target_row,
+                                                                    cols)
+                righter_cells = righter_cells and check
+        return zero_in_pos and lower_rows
 
     def solve_interior_tile(self, target_row, target_col):
         """
@@ -206,7 +219,6 @@ class Puzzle:
         # replace with your code
         return ""
 
+
 # Start interactive simulation
-poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
-
-
+#poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
