@@ -163,7 +163,7 @@ class Puzzle:
         # replace with your code
         assert self.lower_row_invariant(target_row, target_col), (
             "lower_row_invariant failed at %d %d" % (target_row, target_col))
-        #find where the target tail is, move zero to that position
+        # find where the target tail is, move zero to that position
         target_pos = self.current_position(target_row, target_col)
         res = self.move_to_target_out((target_row, target_col), target_pos)
 
@@ -178,13 +178,14 @@ class Puzzle:
         z_diff = [z_row_diff, z_col_diff]
         print self.zero_to_target(z_diff)
 
-        # if z_col_diff == 0:
-        #     if current_pos[1] == 0:
-        #         move = self._moves["u_to_r"] + "l"
-        #         move += self._moves["l_to_u"]
-        #     if current_pos[1] == self.get_width() - 1:
-        #         move = self._moves["u_to_l"] + "r"
-        #         move += self._moves["r_to_u"]
+        # replace with proper while
+        # for i in range(2):
+        if current_pos[1] > target_col:
+            pass    # implement later
+        # else:
+        #     while not (current_pos[0] == target_row and
+        #                current_pos[1] == target_col):
+        #     if
 
         # self.update_puzzle(move)
         # i = 0
@@ -217,7 +218,7 @@ class Puzzle:
 
     def move_to_target_out(self, zero_coord, target_coord):
         """
-        Moves zero tile to target tile. 
+        Moves zero tile to target tile.
         Returns stirng with moves
         """
         res = ""
@@ -239,16 +240,17 @@ class Puzzle:
         Returns where zero tile is
         with respect to target tile
         """
-        if z_diff[0] == 0 and z_diff[1] == 1:
-            res = "right"
-        elif z_diff[0] == 0 and z_diff[1] == -1:
-            res = "left"
-        elif z_diff[0] == -1 and z_diff[1] == 0:
-            res = "up"
-        elif z_diff[0] == 1 and z_diff[1] == 0:
-            res = "down"
-        else:
-            res = None
+        res = None
+        if z_diff[0] == 0:
+            if z_diff[1] == 1:
+                res = "right"
+            if z_diff[1] == -1:
+                res == "left"
+        elif z_diff[1] == 0:
+            if z_diff[0] == -1:
+                res = "up"
+            if z_diff[0] == 1:
+                res = "down"
         return res
 
     def solve_col0_tile(self, target_row):
