@@ -28,6 +28,14 @@ class Puzzle:
                 for col in range(puzzle_width):
                     self._grid[row][col] = initial_grid[row][col]
 
+        self._moves = {"down": "lddru",
+                       "right": "urrdl",
+                       "left": "ulldr",
+                       "u_to_l": "ld",
+                       "u_to_r": "rd",
+                       "r_to_u": "ul",
+                       "l_to_u": "ur"}
+
     def __str__(self):
         """
         Generate string representaion for puzzle
@@ -153,14 +161,69 @@ class Puzzle:
         Updates puzzle and returns a move string
         """
         # replace with your code
-        res = ""
         assert self.lower_row_invariant(target_row, target_col), (
             "lower_row_invariant failed at %d %d" % (target_row, target_col))
+        #find where the target tail is, move zero to that position
         target_pos = self.current_position(target_row, target_col)
-        #move 0 to the target position
-        ups = target_row - target_pos[0]
-        lefts = target_col - target_pos[1]
-        if target_pos[1] > target_col and ups > 0:
+        res = self.move_to_target_out((target_row, target_col), target_pos)
+
+        # check where there target cell is now, get all distances
+        current_pos = self.current_position(target_row, target_col)
+        zero_pos = self.current_position(0, 0)
+        z_row_diff = zero_pos[0] - current_pos[0]
+        z_col_diff = zero_pos[1] - current_pos[1]
+        t_row_diff = target_row - current_pos[0]
+        t_col_diff = target_col - current_pos[1]
+        t_diff = [t_row_diff, t_col_diff]
+        z_diff = [z_row_diff, z_col_diff]
+        print self.zero_to_target(z_diff)
+
+        # if z_col_diff == 0:
+        #     if current_pos[1] == 0:
+        #         move = self._moves["u_to_r"] + "l"
+        #         move += self._moves["l_to_u"]
+        #     if current_pos[1] == self.get_width() - 1:
+        #         move = self._moves["u_to_l"] + "r"
+        #         move += self._moves["r_to_u"]
+
+        # self.update_puzzle(move)
+        # i = 0
+        # print self
+        # while not (current_pos[0] == target_row and
+        #            current_pos[1] == target_col):
+
+        #     if (z_col_diff == 0 and target_row > current_pos[0] and
+        #             target_col <= current_pos[1]):
+        #         print "target is uder 0, implement move down"
+        #         move = self._moves["down"]
+        #     elif z_col_diff < 0 and target_col < current_pos[1]:
+        #         print "target is to the right 0, implement move right"
+        #         move = self._moves["right"]
+        #     else:
+        #         print "target is to the left 0, implement move left"
+        #         move = self._moves["left"]
+        #     self.update_puzzle(move)
+        #     print self, move
+        #     res += move
+        #     current_pos = self.current_position(target_row, target_col)
+        #     zero_pos = self.current_position(0, 0)
+        #     z_col_diff = zero_pos[1] - current_pos[1]
+        #     # z_row_diff = zero_pos[0] - current_pos[0]
+
+        #     i += 1
+        #     if i > 100:
+        #         break
+        return res
+
+    def move_to_target_out(self, zero_coord, target_coord):
+        """
+        Moves zero tile to target tile. 
+        Returns stirng with moves
+        """
+        res = ""
+        ups = zero_coord[0] - target_coord[0]
+        lefts = zero_coord[1] - target_coord[1]
+        if target_coord[1] > zero_coord[1] and ups > 0:
             res += "u"
             ups -= 1
         if lefts > 0:
@@ -168,17 +231,24 @@ class Puzzle:
         else:
             res += "r" * -lefts
         res += "u" * ups
-        #check where there target cell is now
         self.update_puzzle(res)
-        target_pos_update = self.current_position(target_row, target_col)
-        col_diff = target_pos[1] - target_pos_update[1]
-        print "old", target_pos, "new", target_pos_update
-        if col_diff == 0:
-            print "target is uder 0, implement move down"
-        elif col_diff < 0:
-            print "target is to the right 0, implement move right"
+        return res
+
+    def zero_to_target(self, z_diff):
+        """
+        Returns where zero tile is
+        with respect to target tile
+        """
+        if z_diff[0] == 0 and z_diff[1] == 1:
+            res = "right"
+        elif z_diff[0] == 0 and z_diff[1] == -1:
+            res = "left"
+        elif z_diff[0] == -1 and z_diff[1] == 0:
+            res = "up"
+        elif z_diff[0] == 1 and z_diff[1] == 0:
+            res = "down"
         else:
-            print "target is to the left 0, implement move left"
+            res = None
         return res
 
     def solve_col0_tile(self, target_row):
