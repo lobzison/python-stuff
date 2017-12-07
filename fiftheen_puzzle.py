@@ -168,10 +168,17 @@ class Puzzle:
         else:
             res += "r" * -lefts
         res += "u" * ups
-        # if target_pos[0] == target_row:
-        #    if target_pos[0] == target_col - 1:
-        #        res += "l"
+        #check where there target cell is now
         self.update_puzzle(res)
+        target_pos_update = self.current_position(target_row, target_col)
+        col_diff = target_pos[1] - target_pos_update[1]
+        print "old", target_pos, "new", target_pos_update
+        if col_diff == 0:
+            print "target is uder 0, implement move down"
+        elif col_diff < 0:
+            print "target is to the right 0, implement move right"
+        else:
+            print "target is to the left 0, implement move left"
         return res
 
     def solve_col0_tile(self, target_row):
