@@ -153,7 +153,26 @@ class Puzzle:
         Updates puzzle and returns a move string
         """
         # replace with your code
-        return ""
+        res = ""
+        assert self.lower_row_invariant(target_row, target_col), (
+            "lower_row_invariant failed at %d %d" % (target_row, target_col))
+        target_pos = self.current_position(target_row, target_col)
+        #move 0 to the target position
+        ups = target_row - target_pos[0]
+        lefts = target_col - target_pos[1]
+        if target_pos[1] > target_col and ups > 0:
+            res += "u"
+            ups -= 1
+        if lefts > 0:
+            res += "l" * lefts
+        else:
+            res += "r" * -lefts
+        res += "u" * ups
+        # if target_pos[0] == target_row:
+        #    if target_pos[0] == target_col - 1:
+        #        res += "l"
+        self.update_puzzle(res)
+        return res
 
     def solve_col0_tile(self, target_row):
         """
