@@ -216,6 +216,11 @@ class Puzzle:
         #         break
         return res
 
+    def move_to_dir(self, direction, position):
+        res = ""
+        # implement
+        return res
+
     def move_to_target_out(self, zero_coord, target_coord):
         """
         Moves zero tile to target tile.
