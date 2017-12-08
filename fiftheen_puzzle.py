@@ -218,7 +218,10 @@ class Puzzle:
 
     def move_to_dir(self, direction, position):
         res = ""
-        # implement
+        if direction == position:
+            res += position[0]
+        if direction == "down":
+            if position == 
         return res
 
     def move_to_target_out(self, zero_coord, target_coord):
