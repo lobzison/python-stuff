@@ -172,57 +172,64 @@ class Puzzle:
         zero_pos = self.current_position(0, 0)
         z_row_diff = zero_pos[0] - current_pos[0]
         z_col_diff = zero_pos[1] - current_pos[1]
-        t_row_diff = target_row - current_pos[0]
-        t_col_diff = target_col - current_pos[1]
-        t_diff = [t_row_diff, t_col_diff]
         z_diff = [z_row_diff, z_col_diff]
-        print self.zero_to_target(z_diff)
-
-        # replace with proper while
-        # for i in range(2):
-        if current_pos[1] > target_col:
-            pass    # implement later
-        # else:
-        #     while not (current_pos[0] == target_row and
-        #                current_pos[1] == target_col):
-        #     if
-
-        # self.update_puzzle(move)
-        # i = 0
-        # print self
-        # while not (current_pos[0] == target_row and
-        #            current_pos[1] == target_col):
-
-        #     if (z_col_diff == 0 and target_row > current_pos[0] and
-        #             target_col <= current_pos[1]):
-        #         print "target is uder 0, implement move down"
-        #         move = self._moves["down"]
-        #     elif z_col_diff < 0 and target_col < current_pos[1]:
-        #         print "target is to the right 0, implement move right"
-        #         move = self._moves["right"]
-        #     else:
-        #         print "target is to the left 0, implement move left"
-        #         move = self._moves["left"]
-        #     self.update_puzzle(move)
-        #     print self, move
-        #     res += move
-        #     current_pos = self.current_position(target_row, target_col)
-        #     zero_pos = self.current_position(0, 0)
-        #     z_col_diff = zero_pos[1] - current_pos[1]
-        #     # z_row_diff = zero_pos[0] - current_pos[0]
-
-        #     i += 1
-        #     if i > 100:
-        #         break
+        # print self.zero_to_target(z_diff)
+        # move out the first col
+        if current_pos[1] == 0:
+            res += self.move_to_dir("right", self.zero_to_target(z_diff))
+        i = 0
+        while not (current_pos[0] == target_row and
+                   current_pos[1] == target_col):
+            i += 1
+            current_pos = self.current_position(target_row, target_col)
+            zero_pos = self.current_position(0, 0)
+            z_row_diff = zero_pos[0] - current_pos[0]
+            z_col_diff = zero_pos[1] - current_pos[1]
+            z_diff = [z_row_diff, z_col_diff]
+            print self, target_row, target_col
+            if current_pos[1] != target_col:
+                if current_pos[1] > target_col:
+                    print "moving to left"
+                    res += self.move_to_dir("left",
+                                            self.zero_to_target(z_diff))
+                else:
+                    print "moving to right"
+                    print z_diff
+                    print self.zero_to_target(z_diff)
+                    res += self.move_to_dir("right",
+                                            self.zero_to_target(z_diff))
+            else:
+                print "moving down"
+                res += self.move_to_dir("down",
+                                        self.zero_to_target(z_diff))
+            if i >= 100:
+                break
         return res
 
     def move_to_dir(self, direction, position):
-        res = ""
-        if direction == position:
-            res += position[0]
+        """
+        Moves target tile in given direction, given position of zero tile
+        Returns the move
+        """
+        r = ""
         if direction == "down":
-            if position == 
-        return res
+            if position == "down": r += "u" # noqa E701
+            if position == "right": r += "ullddru" # noqa E701
+            if position == "left": r += "dru" # noqa E701
+            if position == "up": r += "lddru" # noqa E701
+        if direction == "left":
+            if position == "down": r += "lur" # noqa E701
+            if position == "right": r += "ulldr" # noqa E701
+            if position == "left": r += "r" # noqa E701
+            if position == "up": r += "ldr" # noqa E701
+        if direction == "right":
+            if position == "down": r += "luurrdl" # noqa E701
+            if position == "right": r+= "l" # noqa E701
+            if position == "left": r+= "urrdl" # noqa E701
+            if position == "up": r += "rdl" # noqa E701
+        # print r, direction, position
+        self.update_puzzle(r)
+        return r
 
     def move_to_target_out(self, zero_coord, target_coord):
         """
@@ -253,7 +260,7 @@ class Puzzle:
             if z_diff[1] == 1:
                 res = "right"
             if z_diff[1] == -1:
-                res == "left"
+                res = "left"
         elif z_diff[1] == 0:
             if z_diff[0] == -1:
                 res = "up"
