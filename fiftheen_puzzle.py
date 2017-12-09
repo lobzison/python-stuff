@@ -218,34 +218,6 @@ class Puzzle:
                       "up": {"down": "luurrdl", "right": "l",
                              "left": "urrdl", "up": "rdl"}}
         res = moves_dict[direction][position]
-        # if direction == "down":
-        #     if position == "down":
-        #         res += "u"
-        #     if position == "right":
-        #         res += "ullddru"
-        #     if position == "left":
-        #         res += "dru"
-        #     if position == "up":
-        #         res += "lddru"
-        # if direction == "left":
-        #     if position == "down":
-        #         res += "lur"
-        #     if position == "right":
-        #         res += "ulldr"
-        #     if position == "left":
-        #         res += "r"
-        #     if position == "up":
-        #         res += "ldr"
-        # if direction == "right":
-        #     if position == "down":
-        #         res += "luurrdl"
-        #     if position == "right":
-        #         res += "l"
-        #     if position == "left":
-        #         res += "urrdl"
-        #     if position == "up":
-        #         res += "rdl"
-        # print r, direction, position
         self.update_puzzle(res)
         return res
 
@@ -292,6 +264,7 @@ class Puzzle:
         Updates puzzle and returns a move string
         """
         # replace with your code
+        # this is even harder. fml
         return ""
 
     #############################################################
