@@ -4,7 +4,7 @@ Note that solved configuration has the blank (zero) tile in upper left
 Use the arrows key to swap this tile with its neighbors
 """
 
-#import poc_fifteen_gui
+# import poc_fifteen_gui
 
 
 class Puzzle:
@@ -28,13 +28,12 @@ class Puzzle:
                 for col in range(puzzle_width):
                     self._grid[row][col] = initial_grid[row][col]
 
-        self._moves = {"down": "lddru",
-                       "right": "urrdl",
-                       "left": "ulldr",
-                       "u_to_l": "ld",
-                       "u_to_r": "rd",
-                       "r_to_u": "ul",
-                       "l_to_u": "ur"}
+        self._moves_dict = {"down": {"down": "u", "right": "ullddru",
+                                     "left": "dru", "up": "lddru"},
+                            "left": {"down": "lur", "right": "ulldr",
+                                     "left": "r", "up": "ldr"},
+                            "right": {"down": "luurrdl", "right": "l",
+                                      "left": "urrdl", "up": "rdl"}}
 
     def __str__(self):
         """
@@ -165,16 +164,16 @@ class Puzzle:
         # find where the target tail is, move zero to that position
         target_pos = self.current_position(target_row, target_col)
         res = self.move_to_target_out((target_row, target_col), target_pos)
-        current_pos, zero_pos, z_diff = self.update_data(target_row,
-                                                         target_col)
+        current_pos, z_diff = self.update_data(target_row,
+                                               target_col)
         res = ""
         while not (current_pos[0] == target_row and
                    current_pos[1] == target_col):
             # move to left first, set correct column, set correct row
             res += self.position_tile(current_pos, z_diff, target_row,
                                       target_col)
-            current_pos, zero_pos, z_diff = self.update_data(target_row,
-                                                             target_col)
+            current_pos, z_diff = self.update_data(target_row,
+                                                   target_col)
 
         # move 0 to correct position
         if self.zero_to_target(z_diff) == "up":
@@ -183,21 +182,6 @@ class Puzzle:
         assert self.lower_row_invariant(target_row, target_col - 1), (
             "lower_row_invariant failed at %d %d" % (target_row,
                                                      target_col - 1))
-        return res
-
-    def move_to_dir(self, direction, position):
-        """
-        Moves target tile in given direction, given position of zero tile
-        Returns the move
-        """
-        moves_dict = {"down": {"down": "u", "right": "ullddru",
-                               "left": "dru", "up": "lddru"},
-                      "left": {"down": "lur", "right": "ulldr",
-                               "left": "r", "up": "ldr"},
-                      "right": {"down": "luurrdl", "right": "l",
-                                "left": "urrdl", "up": "rdl"}}
-        res = moves_dict[direction][position]
-        self.update_puzzle(res)
         return res
 
     def move_to_target_out(self, zero_coord, target_coord):
@@ -220,24 +204,25 @@ class Puzzle:
         return res
 
     def position_tile(self, current_pos, z_diff, target_row, target_col):
-        # check where there target cell is now, get all distances
+        """
+        Do one step in direction of target
+        """
+
         res = ""
         if current_pos[1] == 0:
-            res += self.move_to_dir("right", self.zero_to_target(z_diff))
+            res += self._moves_dict["right"][self.zero_to_target(z_diff)]
         elif current_pos[1] != target_col:
             if current_pos[1] > target_col:
                 # print "moving to left"
                 print z_diff
-                res += self.move_to_dir("left",
-                                        self.zero_to_target(z_diff))
+                res += self._moves_dict["left"][self.zero_to_target(z_diff)]
             else:
                 # print "moving to right"
-                res += self.move_to_dir("right",
-                                        self.zero_to_target(z_diff))
+                res += self._moves_dict["right"][self.zero_to_target(z_diff)]
         else:
             # print "moving down"
-            res += self.move_to_dir("down",
-                                    self.zero_to_target(z_diff))
+            res += self._moves_dict["down"][self.zero_to_target(z_diff)]
+        self.update_puzzle(res)
         return res
 
     def zero_to_target(self, z_diff):
@@ -259,6 +244,9 @@ class Puzzle:
         return res
 
     def update_data(self, target_row, target_col, current=None):
+        """
+        Updates data about tiles, and returns curren position and difference
+        """
         if current is None:
             current_pos = self.current_position(target_row, target_col)
         else:
@@ -267,7 +255,7 @@ class Puzzle:
         z_row_diff = zero_pos[0] - current_pos[0]
         z_col_diff = zero_pos[1] - current_pos[1]
         z_diff = [z_row_diff, z_col_diff]
-        return current_pos, zero_pos, z_diff
+        return current_pos, z_diff
 
     def solve_col0_tile(self, target_row):
         """
@@ -279,25 +267,28 @@ class Puzzle:
         target_pos = self.current_position(target_row, 0)
         res = self.move_to_target_out((target_row, 0), target_pos)
         print self
-        target_pos = self.current_position(target_row, 0)
-        current_pos, zero_pos, z_diff = self.update_data(target_row, 0)
-        while not (current_pos[0] == target_row - 1 and
-                   current_pos[1] == 1):
-            # move to left first, set correct column, set correct row
-            res += self.position_tile(current_pos, z_diff, target_row - 1, 1)
-            current_pos, zero_pos, z_diff = self.update_data(target_row, 0)
-        if self.zero_to_target(z_diff) == "up":
-            res += "ld"
-            self.update_puzzle("ld")
-        elif self.zero_to_target(z_diff) == "right":
-            res += "ulld"
-            self.update_puzzle("ulld")
-        # res += self.position_tile(target_row - 1, 1)
-        res += "ruldrdlurdluurddlur"
-        self.update_puzzle("ruldrdlurdluurddlur")
+        if not self.lower_row_invariant(target_row, 0):
+            target_pos = self.current_position(target_row, 0)
+            current_pos, z_diff = self.update_data(target_row, 0)
+            while not (current_pos[0] == target_row - 1 and
+                       current_pos[1] == 1):
+                # move to left first, set correct column, set correct row
+                res += self.position_tile(current_pos, z_diff,
+                                          target_row - 1, 1)
+                current_pos, z_diff = self.update_data(target_row, 0)
+            if self.zero_to_target(z_diff) == "up":
+                res += "ld"
+                self.update_puzzle("ld")
+            elif self.zero_to_target(z_diff) == "right":
+                res += "ulld"
+                self.update_puzzle("ulld")
+            # res += self.position_tile(target_row - 1, 1)
+            res += "ruldrdlurdluurddlur"
+            self.update_puzzle("ruldrdlurdluurddlur")
         res += self.move_to_target_out(self.current_position(0, 0),
                                        (target_row - 1, self.get_width() - 1))
-        assert self.lower_row_invariant(target_row - 1, self.get_width() - 1), (
+        assert self.lower_row_invariant(target_row - 1,
+                                        self.get_width() - 1), (
             "lower_row_invariant failed at %d %d" % (target_row, 0))
         print self, res
         return res
@@ -360,4 +351,4 @@ class Puzzle:
 
 
 # Start interactive simulation
-#poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
+# poc_fifteen_gui.FifteenGUI(Puzzle(4, 4))
