@@ -160,43 +160,22 @@ class Puzzle:
         Place correct tile at target position
         Updates puzzle and returns a move string
         """
-        # replace with your code
         assert self.lower_row_invariant(target_row, target_col), (
             "lower_row_invariant failed at %d %d" % (target_row, target_col))
         # find where the target tail is, move zero to that position
         target_pos = self.current_position(target_row, target_col)
         res = self.move_to_target_out((target_row, target_col), target_pos)
-
-        # check where there target cell is now, get all distances
-        current_pos = self.current_position(target_row, target_col)
-        zero_pos = self.current_position(0, 0)
-        z_row_diff = zero_pos[0] - current_pos[0]
-        z_col_diff = zero_pos[1] - current_pos[1]
-        z_diff = [z_row_diff, z_col_diff]
-
+        current_pos, zero_pos, z_diff = self.update_data(target_row,
+                                                         target_col)
+        res = ""
         while not (current_pos[0] == target_row and
                    current_pos[1] == target_col):
             # move to left first, set correct column, set correct row
-            if current_pos[1] == 0:
-                res += self.move_to_dir("right", self.zero_to_target(z_diff))
-            elif current_pos[1] != target_col:
-                if current_pos[1] > target_col:
-                    # print "moving to left"
-                    res += self.move_to_dir("left",
-                                            self.zero_to_target(z_diff))
-                else:
-                    # print "moving to right"
-                    res += self.move_to_dir("right",
-                                            self.zero_to_target(z_diff))
-            else:
-                # print "moving down"
-                res += self.move_to_dir("down",
-                                        self.zero_to_target(z_diff))
-            current_pos = self.current_position(target_row, target_col)
-            zero_pos = self.current_position(0, 0)
-            z_row_diff = zero_pos[0] - current_pos[0]
-            z_col_diff = zero_pos[1] - current_pos[1]
-            z_diff = [z_row_diff, z_col_diff]
+            res += self.position_tile(current_pos, z_diff, target_row,
+                                      target_col)
+            current_pos, zero_pos, z_diff = self.update_data(target_row,
+                                                             target_col)
+
         # move 0 to correct position
         if self.zero_to_target(z_diff) == "up":
             res += "ld"
@@ -215,8 +194,8 @@ class Puzzle:
                                "left": "dru", "up": "lddru"},
                       "left": {"down": "lur", "right": "ulldr",
                                "left": "r", "up": "ldr"},
-                      "up": {"down": "luurrdl", "right": "l",
-                             "left": "urrdl", "up": "rdl"}}
+                      "right": {"down": "luurrdl", "right": "l",
+                                "left": "urrdl", "up": "rdl"}}
         res = moves_dict[direction][position]
         self.update_puzzle(res)
         return res
@@ -240,6 +219,27 @@ class Puzzle:
         self.update_puzzle(res)
         return res
 
+    def position_tile(self, current_pos, z_diff, target_row, target_col):
+        # check where there target cell is now, get all distances
+        res = ""
+        if current_pos[1] == 0:
+            res += self.move_to_dir("right", self.zero_to_target(z_diff))
+        elif current_pos[1] != target_col:
+            if current_pos[1] > target_col:
+                # print "moving to left"
+                print z_diff
+                res += self.move_to_dir("left",
+                                        self.zero_to_target(z_diff))
+            else:
+                # print "moving to right"
+                res += self.move_to_dir("right",
+                                        self.zero_to_target(z_diff))
+        else:
+            # print "moving down"
+            res += self.move_to_dir("down",
+                                    self.zero_to_target(z_diff))
+        return res
+
     def zero_to_target(self, z_diff):
         """
         Returns where zero tile is
@@ -258,14 +258,49 @@ class Puzzle:
                 res = "down"
         return res
 
+    def update_data(self, target_row, target_col, current=None):
+        if current is None:
+            current_pos = self.current_position(target_row, target_col)
+        else:
+            current_pos = current
+        zero_pos = self.current_position(0, 0)
+        z_row_diff = zero_pos[0] - current_pos[0]
+        z_col_diff = zero_pos[1] - current_pos[1]
+        z_diff = [z_row_diff, z_col_diff]
+        return current_pos, zero_pos, z_diff
+
     def solve_col0_tile(self, target_row):
         """
         Solve tile in column zero on specified row (> 1)
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        # this is even harder. fml
-        return ""
+        assert self.lower_row_invariant(target_row, 0), (
+            "lower_row_invariant failed at %d %d" % (target_row, 0))
+        target_pos = self.current_position(target_row, 0)
+        res = self.move_to_target_out((target_row, 0), target_pos)
+        print self
+        target_pos = self.current_position(target_row, 0)
+        current_pos, zero_pos, z_diff = self.update_data(target_row, 0)
+        while not (current_pos[0] == target_row - 1 and
+                   current_pos[1] == 1):
+            # move to left first, set correct column, set correct row
+            res += self.position_tile(current_pos, z_diff, target_row - 1, 1)
+            current_pos, zero_pos, z_diff = self.update_data(target_row, 0)
+        if self.zero_to_target(z_diff) == "up":
+            res += "ld"
+            self.update_puzzle("ld")
+        elif self.zero_to_target(z_diff) == "right":
+            res += "ulld"
+            self.update_puzzle("ulld")
+        # res += self.position_tile(target_row - 1, 1)
+        res += "ruldrdlurdluurddlur"
+        self.update_puzzle("ruldrdlurdluurddlur")
+        res += self.move_to_target_out(self.current_position(0, 0),
+                                       (target_row - 1, self.get_width() - 1))
+        assert self.lower_row_invariant(target_row - 1, self.get_width() - 1), (
+            "lower_row_invariant failed at %d %d" % (target_row, 0))
+        print self, res
+        return res
 
     #############################################################
     # Phase two methods
