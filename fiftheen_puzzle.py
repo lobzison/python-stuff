@@ -173,37 +173,37 @@ class Puzzle:
         z_row_diff = zero_pos[0] - current_pos[0]
         z_col_diff = zero_pos[1] - current_pos[1]
         z_diff = [z_row_diff, z_col_diff]
-        # print self.zero_to_target(z_diff)
-        # move out the first col
-        if current_pos[1] == 0:
-            res += self.move_to_dir("right", self.zero_to_target(z_diff))
-        i = 0
+
         while not (current_pos[0] == target_row and
                    current_pos[1] == target_col):
-            i += 1
+            # move to left first, set correct column, set correct row
+            if current_pos[1] == 0:
+                res += self.move_to_dir("right", self.zero_to_target(z_diff))
+            elif current_pos[1] != target_col:
+                if current_pos[1] > target_col:
+                    # print "moving to left"
+                    res += self.move_to_dir("left",
+                                            self.zero_to_target(z_diff))
+                else:
+                    # print "moving to right"
+                    res += self.move_to_dir("right",
+                                            self.zero_to_target(z_diff))
+            else:
+                # print "moving down"
+                res += self.move_to_dir("down",
+                                        self.zero_to_target(z_diff))
             current_pos = self.current_position(target_row, target_col)
             zero_pos = self.current_position(0, 0)
             z_row_diff = zero_pos[0] - current_pos[0]
             z_col_diff = zero_pos[1] - current_pos[1]
             z_diff = [z_row_diff, z_col_diff]
-            print self, target_row, target_col
-            if current_pos[1] != target_col:
-                if current_pos[1] > target_col:
-                    print "moving to left"
-                    res += self.move_to_dir("left",
-                                            self.zero_to_target(z_diff))
-                else:
-                    print "moving to right"
-                    print z_diff
-                    print self.zero_to_target(z_diff)
-                    res += self.move_to_dir("right",
-                                            self.zero_to_target(z_diff))
-            else:
-                print "moving down"
-                res += self.move_to_dir("down",
-                                        self.zero_to_target(z_diff))
-            if i >= 100:
-                break
+        # move 0 to correct position
+        if self.zero_to_target(z_diff) == "up":
+            res += "ld"
+            self.update_puzzle("ld")
+        assert self.lower_row_invariant(target_row, target_col - 1), (
+            "lower_row_invariant failed at %d %d" % (target_row,
+                                                     target_col - 1))
         return res
 
     def move_to_dir(self, direction, position):
@@ -211,25 +211,43 @@ class Puzzle:
         Moves target tile in given direction, given position of zero tile
         Returns the move
         """
-        r = ""
-        if direction == "down":
-            if position == "down": r += "u" # noqa E701
-            if position == "right": r += "ullddru" # noqa E701
-            if position == "left": r += "dru" # noqa E701
-            if position == "up": r += "lddru" # noqa E701
-        if direction == "left":
-            if position == "down": r += "lur" # noqa E701
-            if position == "right": r += "ulldr" # noqa E701
-            if position == "left": r += "r" # noqa E701
-            if position == "up": r += "ldr" # noqa E701
-        if direction == "right":
-            if position == "down": r += "luurrdl" # noqa E701
-            if position == "right": r+= "l" # noqa E701
-            if position == "left": r+= "urrdl" # noqa E701
-            if position == "up": r += "rdl" # noqa E701
+        moves_dict = {"down": {"down": "u", "right": "ullddru",
+                               "left": "dru", "up": "lddru"},
+                      "left": {"down": "lur", "right": "ulldr",
+                               "left": "r", "up": "ldr"},
+                      "up": {"down": "luurrdl", "right": "l",
+                             "left": "urrdl", "up": "rdl"}}
+        res = moves_dict[direction][position]
+        # if direction == "down":
+        #     if position == "down":
+        #         res += "u"
+        #     if position == "right":
+        #         res += "ullddru"
+        #     if position == "left":
+        #         res += "dru"
+        #     if position == "up":
+        #         res += "lddru"
+        # if direction == "left":
+        #     if position == "down":
+        #         res += "lur"
+        #     if position == "right":
+        #         res += "ulldr"
+        #     if position == "left":
+        #         res += "r"
+        #     if position == "up":
+        #         res += "ldr"
+        # if direction == "right":
+        #     if position == "down":
+        #         res += "luurrdl"
+        #     if position == "right":
+        #         res += "l"
+        #     if position == "left":
+        #         res += "urrdl"
+        #     if position == "up":
+        #         res += "rdl"
         # print r, direction, position
-        self.update_puzzle(r)
-        return r
+        self.update_puzzle(res)
+        return res
 
     def move_to_target_out(self, zero_coord, target_coord):
         """
