@@ -133,13 +133,16 @@ class Puzzle:
     ##################################################################
     # Phase one methods
 
-    def lower_row_invariant(self, target_row, target_col):
+    def lower_row_invariant(self, target_row, target_col, ignore_zero=False):
         """
         Check whether the puzzle satisfies the specified invariant
         at the given position in the bottom rows of the puzzle (target_row > 1)
         Returns a boolean
         """
-        zero_in_pos = self.get_number(target_row, target_col) == 0
+        if not ignore_zero:
+            zero_in_pos = self.get_number(target_row, target_col) == 0
+        else:
+            zero_in_pos = True
         lower_rows = True
         righter_cells = True
         if target_row != self.get_height() - 1:
@@ -267,7 +270,9 @@ class Puzzle:
         target_pos = self.current_position(target_row, 0)
         res = self.move_to_target_out((target_row, 0), target_pos)
         print self
-        if not self.lower_row_invariant(target_row, 0):
+        # sould check different way
+        if not self.lower_row_invariant(target_row - 1,
+                                        self.get_width() - 1, True):
             target_pos = self.current_position(target_row, 0)
             current_pos, z_diff = self.update_data(target_row, 0)
             while not (current_pos[0] == target_row - 1 and
