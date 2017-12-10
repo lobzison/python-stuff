@@ -332,8 +332,25 @@ class Puzzle:
         Solve the tile in row one at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        assert self.row1_invariant(target_col), (
+            "lower_row_invariant failed at %d %d" % (1, target_col))
+        target_pos = self.current_position(1, target_col)
+        res = self.move_to_target_out((1, target_col), target_pos)
+        if not (1, target_col) == self.current_position(1, target_col):
+            print "AGGAGA"
+            target_pos = self.current_position(1, target_col)
+            current_pos, z_diff = self.update_data(1, target_col)
+            while not (current_pos[0] == 1 and
+                       current_pos[1] == target_col):
+                # move to left first, set correct column, set correct row
+                res += self.position_tile(current_pos, z_diff,
+                                          1, target_col)
+                current_pos, z_diff = self.update_data(1, target_col)
+        if self.zero_to_target(z_diff) != "up":
+            if self.zero_to_target(z_diff) == "left":
+                res += "ur"
+            self.update_puzzle("ur")
+        return res
 
     ###########################################################
     # Phase 3 methods
