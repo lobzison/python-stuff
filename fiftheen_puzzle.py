@@ -169,7 +169,6 @@ class Puzzle:
         res = self.move_to_target_out((target_row, target_col), target_pos)
         current_pos, z_diff = self.update_data(target_row,
                                                target_col)
-        res = ""
         while not (current_pos[0] == target_row and
                    current_pos[1] == target_col):
             # move to left first, set correct column, set correct row
