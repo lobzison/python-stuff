@@ -306,8 +306,10 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        zero_in_pos = self.get_number(0, target_col) == 0
+        cell_check = self.current_position(1, target_col) == (1, target_col)
+        check_rows = self.lower_row_invariant(1, target_col, True)
+        return zero_in_pos and cell_check and check_rows
 
     def row1_invariant(self, target_col):
         """
@@ -315,8 +317,7 @@ class Puzzle:
         at the given column (col > 1)
         Returns a boolean
         """
-        # replace with your code
-        return False
+        return self.lower_row_invariant(1, target_col)
 
     def solve_row0_tile(self, target_col):
         """
