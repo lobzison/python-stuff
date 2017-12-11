@@ -401,8 +401,17 @@ class Puzzle:
         Solve the upper left 2x2 part of the puzzle
         Updates the puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        assert self.row1_invariant(1), (
+            "row1_invariant failed at %d" % (1))
+        res = "lu"
+        self.update_puzzle("lu")
+        print self, res
+        while not ((0, 1) == self.current_position(0, 1) and
+                   (1, 0) == self.current_position(1, 0) and
+                   (1, 1) == self.current_position(1, 1)):
+            res += 'rdlu'
+            self.update_puzzle("rdlu")
+        return res
 
     def solve_puzzle(self):
         """
