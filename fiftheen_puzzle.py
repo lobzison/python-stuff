@@ -218,7 +218,6 @@ class Puzzle:
         """
         res = ""
         if row0:
-            print "AGGAGA"
             moves = self._moves_dict_row0
         else:
             moves = self._moves_dict
@@ -378,6 +377,7 @@ class Puzzle:
             "lower_row_invariant failed at %d %d" % (1, target_col))
         target_pos = self.current_position(1, target_col)
         res = self.move_to_target_out((1, target_col), target_pos)
+        current_pos, z_diff = self.update_data(1, target_col)
         if not (1, target_col) == self.current_position(1, target_col):
             target_pos = self.current_position(1, target_col)
             current_pos, z_diff = self.update_data(1, target_col)
@@ -418,8 +418,34 @@ class Puzzle:
         Generate a solution string for a puzzle
         Updates the puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        # solve all but top 2 rows
+        res = ""
+        zero_coord = self.current_position(0, 0)
+        z_diff0 = (self.get_height() - 1) - zero_coord[0]
+        z_diff1 = (self.get_width() - 1) - zero_coord[1]
+        if z_diff0 > 0:
+            res += "d" * z_diff0
+        else:
+            res += "u" * -z_diff0
+        if z_diff1 > 0:
+            res += "r" * z_diff1
+        else:
+            res += "l" * -z_diff1
+        self.update_puzzle(res)
+        for row in range(self.get_height() - 1, 1, -1):
+            for col in range(self.get_width() - 1, -1, -1):
+                if col != 0:
+                    res += self.solve_interior_tile(row, col)
+                else:
+                    res += self.solve_col0_tile(row)
+        for col in range(self.get_width() - 1, 1, -1):
+            for row in range(1, -1, -1):
+                if row != 0:
+                    res += self.solve_row1_tile(col)
+                else:
+                    res += self.solve_row0_tile(col)
+        res += self.solve_2x2()
+        return res
 
 
 # Start interactive simulation
