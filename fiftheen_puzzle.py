@@ -34,6 +34,12 @@ class Puzzle:
                                      "left": "r", "up": "ldr"},
                             "right": {"down": "luurrdl", "right": "l",
                                       "left": "urrdl", "up": "rdl"}}
+        self._moves_dict_row0 = {"down": {"down": "u", "right": "dlu",
+                                          "left": "dru", "up": "lddru"},
+                                 "left": {"down": "lur", "right": "ulldr",
+                                          "left": "r", "up": "ldr"},
+                                 "right": {"down": "rul", "right": "l",
+                                           "left": "drrul", "up": "rdl"}}
 
     def __str__(self):
         """
@@ -205,25 +211,31 @@ class Puzzle:
         self.update_puzzle(res)
         return res
 
-    def position_tile(self, current_pos, z_diff, target_row, target_col):
+    def position_tile(self, current_pos, z_diff, target_row,
+                      target_col, row0=False):
         """
         Do one step in direction of target
         """
-
         res = ""
+        if row0:
+            print "AGGAGA"
+            moves = self._moves_dict_row0
+        else:
+            moves = self._moves_dict
         if current_pos[1] == 0:
-            res += self._moves_dict["right"][self.zero_to_target(z_diff)]
+            res += moves["right"][self.zero_to_target(z_diff)]
         elif current_pos[1] != target_col:
             if current_pos[1] > target_col:
                 # print "moving to left"
                 print z_diff
-                res += self._moves_dict["left"][self.zero_to_target(z_diff)]
+                res += moves["left"][self.zero_to_target(z_diff)]
             else:
                 # print "moving to right"
-                res += self._moves_dict["right"][self.zero_to_target(z_diff)]
+                res += moves["right"][self.zero_to_target(z_diff)]
         else:
             # print "moving down"
-            res += self._moves_dict["down"][self.zero_to_target(z_diff)]
+            res += moves["down"][self.zero_to_target(z_diff)]
+        print self, res
         self.update_puzzle(res)
         return res
 
@@ -324,8 +336,38 @@ class Puzzle:
         Solve the tile in row zero at the specified column
         Updates puzzle and returns a move string
         """
-        # replace with your code
-        return ""
+        assert self.row0_invariant(target_col), (
+            "lower_row_invariant failed at %d %d" % (0, target_col))
+        target_pos = self.current_position(0, target_col)
+        res = self.move_to_target_out((0, target_col), target_pos)
+        # sould check different way
+        if not (0, target_col) == self.current_position(0, target_col):
+            target_pos = self.current_position(0, target_col)
+            current_pos, z_diff = self.update_data(0, target_col)
+            while not (current_pos[0] == 1 and
+                       current_pos[1] == target_col - 1):
+                # move to left first, set correct column, set correct row
+                print self
+                if current_pos[0] == 0:
+                    row0 = True
+                else:
+                    row0 = False
+                res += self.position_tile(current_pos, z_diff,
+                                          1, target_col - 1, row0)
+                current_pos, z_diff = self.update_data(0, target_col)
+            if self.zero_to_target(z_diff) == "up":
+                res += "ld"
+                self.update_puzzle("ld")
+            # res += self.position_tile(target_row - 1, 1)
+            res += "urdlurrdluldrruld"
+            self.update_puzzle("urdlurrdluldrruld")
+        else:
+            res += 'd'
+            self.update_puzzle("d")
+        print self
+        assert self.row1_invariant(target_col - 1), (
+            "lower_row_invariant failed at %d %d" % (1, target_col - 1))
+        return res
 
     def solve_row1_tile(self, target_col):
         """
@@ -337,7 +379,6 @@ class Puzzle:
         target_pos = self.current_position(1, target_col)
         res = self.move_to_target_out((1, target_col), target_pos)
         if not (1, target_col) == self.current_position(1, target_col):
-            print "AGGAGA"
             target_pos = self.current_position(1, target_col)
             current_pos, z_diff = self.update_data(1, target_col)
             while not (current_pos[0] == 1 and
