@@ -196,3 +196,49 @@ print is_undirected_graph_valid(graph4)
 
 graph5 = { "0" : set(["0"]) }
 print is_undirected_graph_valid(graph5)
+
+print compute_in_degrees(graph1)
+
+def find_popular_nodes(graph):
+    avg_degree = (edge_count(graph) * 2) / node_count(graph)
+    count = 0
+    res = set([])
+    for node in graph:
+        if len(graph[node]) > avg_degree:
+            res.add(node)
+            count += 1
+    return count, res
+
+print find_popular_nodes(graph1)
+
+import urllib2
+import codeskulptor
+codeskulptor.set_timeout(7)
+CITATION_URL = "http://storage.googleapis.com/codeskulptor-alg/random10000.txt"
+
+def load_graph(graph_url):
+    """
+    Function that loads a graph given the URL
+    for a text representation of the graph
+    
+    Returns a dictionary that models a graph
+    """
+    graph_file = urllib2.urlopen(graph_url)
+    graph_text = graph_file.read()
+    graph_lines = graph_text.split('\n')
+    graph_lines = graph_lines[ : -1]
+    
+    print "Loaded graph with", len(graph_lines), "nodes"
+    
+    answer_graph = {}
+    for line in graph_lines:
+        neighbors = line.split(' ')
+        node = int(neighbors[0])
+        answer_graph[node] = set([])
+        for neighbor in neighbors[1 : -1]:
+            answer_graph[node].add(int(neighbor))
+
+    return answer_graph
+
+test_graph1 = load_graph(CITATION_URL)
+print find_popular_nodes(test_graph1)
