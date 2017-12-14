@@ -81,3 +81,118 @@ def in_degree_distribution(digraph):
         else:
             res[in_degree[node]] += 1
     return res
+
+def node_count(graph):
+    """
+    Returns the number of nodes in a graph.
+
+    Arguments:
+    graph -- The given graph.
+
+    Returns:
+    The number of nodes in the given graph.
+    """
+    return len(graph.keys())
+
+print node_count(EX_GRAPH0)
+print node_count(EX_GRAPH1)
+print node_count(EX_GRAPH2)
+print node_count({})
+print "----------------"
+
+def edge_count(graph):
+    """
+    Returns the number of edges in a graph.
+
+    Arguments:
+    graph -- The given graph.
+
+    Returns:
+    The number of edges in the given graph.
+    """
+    res = 0
+    for edges in graph.values():
+        res += len(edges)
+    return res / 2
+
+graph1 = { "0" : set(["1","2"]),
+               "1" : set(["0","2"]),
+               "2" : set(["1","0"]) }
+print edge_count(graph1)
+print edge_count(EX_GRAPH0)
+print edge_count(EX_GRAPH1)
+print edge_count(EX_GRAPH2)
+print edge_count({})
+
+
+ 
+    
+def make_graph1(num_nodes):
+    """
+    #V = {0, 1, 2, 3, 4, 5} where an edge exists 
+    from n to n+1 (for n = 0...4).
+    Also include the edge (5,0)
+    """
+    res = {}
+    for node in range(num_nodes + 1):
+        res[node] = set([num for num in range(node, num_nodes + 1)
+                         if num != node])
+    res[num_nodes] = set([0])
+    return res
+
+def make_graph2(num_nodes):
+    """
+    #V = {0, 1, 2, 3, 4, 5} where an edge exists 
+    from n to n+1 (for n = 0...4).
+    Also include the edge (5,0)
+    """
+    res = {}
+    for node in range(num_nodes + 1):
+        res[node] = set([(node + 1) % (num_nodes + 1)])
+    return res
+
+print make_graph1(5)
+print make_graph2(5)
+
+def is_undirected_graph_valid(graph):
+    """
+    Tests whether the given graph is logically valid.
+
+    Asserts for every unordered pair of distinct nodes {n1, n2} that
+    if n2 appears in n1's adjacency set then n1 also appears in
+    n2's adjacency set.  Also asserts that no node appears in 
+    its own adjacency set and that every value that appears in
+    an adjacency set is a node in the graph.
+
+    Arguments:
+    graph -- The graph in dictionary form to test.
+
+    Returns:
+    True if the graph is logically valid.  False otherwise.
+    """
+    for node in graph:
+        for edge in graph[node]:
+            if (edge not in graph) or (edge == node) or (node not in graph[edge]):
+                return False
+    return True
+
+graph1 = { "0" : set(["1","2"]),
+               "1" : set(["0","2"]),
+               "2" : set(["1","0"]) }
+print is_undirected_graph_valid(graph1)
+
+graph2 = { "0" : set(["1","2"]),
+               "1" : set(["0","2"]),
+               "2" : set(["1"]) }
+print is_undirected_graph_valid(graph2)
+
+graph3 = make_complete_graph(100)
+print is_undirected_graph_valid(graph3)
+
+graph4 = { "0" : set(["1","2"]),
+               "1" : set(["0","2"]),
+               "2" : set(["1","3"]) }
+print is_undirected_graph_valid(graph4)
+
+graph5 = { "0" : set(["0"]) }
+print is_undirected_graph_valid(graph5)
