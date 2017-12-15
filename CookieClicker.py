@@ -147,27 +147,6 @@ def simulate_clicker(build_info, duration, strategy):
             break
         game.buy_item(strtg, info.get_cost(strtg), info.get_cps(strtg))
         info.update_item(strtg)
-
-    # i = 0
-    # while strtg is not None:
-    # #for i in range(150):
-    #     strtg = strategy(game.get_cookies(), game.get_cps(),
-    #                      game.get_history(), 0, info)
-    #     print strtg
-    #     if strtg is None:
-    #         print "END"
-    #         break
-    #     game.buy_item(strtg, info.get_cost(strtg), info.get_cps(strtg))            
-    #     info.update_item(strtg)
-    #     i += 1
-    #     if i > 1000:
-    #         print "BAD END"
-    #         break
-
-    #for item in info.build_items():
-    #    print item, info.get_cost(item), info.get_cps(item)
-    #for item in game.get_history():
-    #    print item
     return game
 
 
