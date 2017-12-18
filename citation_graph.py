@@ -10,13 +10,14 @@ import graph_degees_calc
 import matplotlib.pyplot as plt
 # Set timeout for CodeSkulptor if necessary
 #import codeskulptor
-#codeskulptor.set_timeout(20)
+# codeskulptor.set_timeout(20)
 
 
 ###################################
 # Code for loading citation graph
 
 CITATION_URL = "http://storage.googleapis.com/codeskulptor-alg/alg_phys-cite.txt"
+
 
 def load_graph(graph_url):
     """
@@ -28,7 +29,7 @@ def load_graph(graph_url):
     graph_file = urllib2.urlopen(graph_url)
     graph_text = graph_file.read()
     graph_lines = graph_text.split('\n')
-    graph_lines = graph_lines[ : -1]
+    graph_lines = graph_lines[: -1]
 
     print "Loaded graph with", len(graph_lines), "nodes"
 
@@ -37,17 +38,17 @@ def load_graph(graph_url):
         neighbors = line.split(' ')
         node = int(neighbors[0])
         answer_graph[node] = set([])
-        for neighbor in neighbors[1 : -1]:
+        for neighbor in neighbors[1: -1]:
             answer_graph[node].add(int(neighbor))
 
     return answer_graph
+
 
 def plot_in_degree_dist():
     """
     Plotting log in degree to log amount of nodes of loaded grapth
     """
     citation_graph = load_graph(CITATION_URL)
-
 
     in_degrees = graph_degees_calc.in_degree_distribution(citation_graph)
 
@@ -64,3 +65,29 @@ def plot_in_degree_dist():
 
 
 plot_in_degree_dist()
+
+
+def plot_graph(graph):
+    in_degrees = graph_degees_calc.in_degree_distribution(graph)
+
+    total = float(sum(in_degrees.keys()))
+    in_degrees_norm = {key: val / total for key, val in in_degrees.iteritems()}
+
+    # plt.xscale('log')
+    # plt.yscale('log')
+    plt.plot(in_degrees_norm.keys(), in_degrees_norm.values(), "bo")
+    plt.show()
+
+
+def calc_average_out_degree(digraph):
+    out_degree = graph_degees_calc.compute_out_degree(digraph)
+    num = graph_degees_calc.node_count(digraph)
+    total_out = sum(out_degree.values())
+    return total_out / num
+
+#plot_rnd_graph()
+
+# graph_rnd = graph_degees_calc.rnd_graph
+# plot_graph(graph_rnd)
+
+print calc_average_out_degree(load_graph(CITATION_URL))

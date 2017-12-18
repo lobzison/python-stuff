@@ -1,12 +1,14 @@
 """
 Simple graph distionary representation and calculation
 """
+import random
 EX_GRAPH0 = {0: set([1, 2]), 1: set([]), 2: set([])}
 EX_GRAPH1 = {0: set([1, 4, 5]), 1: set([2, 6]), 2: set([3]),
              3: set([0]), 4: set([1]), 5: set([2]), 6: set([])}
 EX_GRAPH2 = {0: set([1, 4, 5]), 1: set([2, 6]), 2: set([3, 7]),
              3: set([7]), 4: set([1]), 5: set([2]), 6: set([]),
              7: set([3]), 8: set([1, 2]), 9: set([0, 3, 4, 5, 6, 7])}
+
 
 def make_complete_graph(num_nodes):
     """
@@ -22,6 +24,7 @@ def make_complete_graph(num_nodes):
             ajasent_nodes.remove(node)
             res[node] = ajasent_nodes
     return res
+
 
 def compute_in_degrees(digraph):
     """
@@ -39,16 +42,17 @@ def compute_in_degrees(digraph):
         Returns:
         A dictionary where every key is mapped to the given default_value.
         """
-        res ={}
+        res = {}
         for key in keys:
             res[key] = default_value
         return res
-    
+
     res = make_dict(digraph.keys(), 0)
     for node_out in digraph:
         for node_in in digraph[node_out]:
             res[node_in] += 1
     return res
+
 
 def compute_in_degrees_old(digraph):
     """
@@ -67,6 +71,7 @@ def compute_in_degrees_old(digraph):
             res[node_in] = in_degree
     return res
 
+
 def in_degree_distribution(digraph):
     """
     Computes in-degree distribution of a graph
@@ -82,6 +87,27 @@ def in_degree_distribution(digraph):
             res[in_degree[node]] += 1
     return res
 
+
+def compute_out_degree(digraph):
+    """Compute out degree of graph"""
+    res = {}
+    for node in digraph:
+        res[node] = len(digraph[node])
+    return res
+
+
+def out_degree_distribution(digraph):
+    """Computes out degree distribution of graph"""
+    out_degree = compute_out_degree(digraph)
+    res = {}
+    for node in out_degree:
+        if out_degree[node] not in res:
+            res[out_degree[node]] = 1
+        else:
+            res[out_degree[node]] += 1
+    return res
+
+
 def node_count(graph):
     """
     Returns the number of nodes in a graph.
@@ -94,11 +120,13 @@ def node_count(graph):
     """
     return len(graph.keys())
 
+
 print node_count(EX_GRAPH0)
 print node_count(EX_GRAPH1)
 print node_count(EX_GRAPH2)
 print node_count({})
 print "----------------"
+
 
 def edge_count(graph):
     """
@@ -115,9 +143,10 @@ def edge_count(graph):
         res += len(edges)
     return res / 2
 
-graph1 = { "0" : set(["1","2"]),
-               "1" : set(["0","2"]),
-               "2" : set(["1","0"]) }
+
+graph1 = {"0": set(["1", "2"]),
+          "1": set(["0", "2"]),
+          "2": set(["1", "0"])}
 print edge_count(graph1)
 print edge_count(EX_GRAPH0)
 print edge_count(EX_GRAPH1)
@@ -125,8 +154,6 @@ print edge_count(EX_GRAPH2)
 print edge_count({})
 
 
- 
-    
 def make_graph1(num_nodes):
     """
     #V = {0, 1, 2, 3, 4, 5} where an edge exists 
@@ -140,6 +167,7 @@ def make_graph1(num_nodes):
     res[num_nodes] = set([0])
     return res
 
+
 def make_graph2(num_nodes):
     """
     #V = {0, 1, 2, 3, 4, 5} where an edge exists 
@@ -151,8 +179,10 @@ def make_graph2(num_nodes):
         res[node] = set([(node + 1) % (num_nodes + 1)])
     return res
 
+
 print make_graph1(5)
 print make_graph2(5)
+
 
 def is_undirected_graph_valid(graph):
     """
@@ -176,25 +206,26 @@ def is_undirected_graph_valid(graph):
                 return False
     return True
 
-graph1 = { "0" : set(["1","2"]),
-               "1" : set(["0","2"]),
-               "2" : set(["1","0"]) }
+
+graph1 = {"0": set(["1", "2"]),
+          "1": set(["0", "2"]),
+          "2": set(["1", "0"])}
 print is_undirected_graph_valid(graph1)
 
-graph2 = { "0" : set(["1","2"]),
-               "1" : set(["0","2"]),
-               "2" : set(["1"]) }
+graph2 = {"0": set(["1", "2"]),
+          "1": set(["0", "2"]),
+          "2": set(["1"])}
 print is_undirected_graph_valid(graph2)
 
 graph3 = make_complete_graph(100)
 print is_undirected_graph_valid(graph3)
 
-graph4 = { "0" : set(["1","2"]),
-               "1" : set(["0","2"]),
-               "2" : set(["1","3"]) }
+graph4 = {"0": set(["1", "2"]),
+          "1": set(["0", "2"]),
+          "2": set(["1", "3"])}
 print is_undirected_graph_valid(graph4)
 
-graph5 = { "0" : set(["0"]) }
+graph5 = {"0": set(["0"])}
 
 
 def find_popular_nodes(graph):
@@ -207,29 +238,50 @@ def find_popular_nodes(graph):
             count += 1
     return count, res
 
+
 import urllib2
 CITATION_URL = "http://storage.googleapis.com/codeskulptor-alg/random10000.txt"
+
 
 def load_graph(graph_url):
     """
     Function that loads a graph given the URL
     for a text representation of the graph
-    
+
     Returns a dictionary that models a graph
     """
     graph_file = urllib2.urlopen(graph_url)
     graph_text = graph_file.read()
     graph_lines = graph_text.split('\n')
-    graph_lines = graph_lines[ : -1]
-    
+    graph_lines = graph_lines[: -1]
+
     print "Loaded graph with", len(graph_lines), "nodes"
-    
+
     answer_graph = {}
     for line in graph_lines:
         neighbors = line.split(' ')
         node = int(neighbors[0])
         answer_graph[node] = set([])
-        for neighbor in neighbors[1 : -1]:
+        for neighbor in neighbors[1: -1]:
             answer_graph[node].add(int(neighbor))
 
     return answer_graph
+
+
+def make_random_graph(num_nodes, probablitiy):
+    res = {}
+    for node in range(num_nodes):
+        res[node] = set([])
+    for node_from in range(num_nodes):
+        for node_to in range(num_nodes):
+            prob1 = random.random()
+            if probablitiy < prob1:
+                res[node_from].add(node_to)
+            prob2 = random.random()
+            if probablitiy < prob2:
+                res[node_to].add(node_from)
+    return res
+
+
+rnd_graph = make_random_graph(1000, 0.9)
+print in_degree_distribution(rnd_graph)
