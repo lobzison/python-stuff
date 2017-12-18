@@ -2,6 +2,7 @@
 Simple graph distionary representation and calculation
 """
 import random
+import dpa_trial
 EX_GRAPH0 = {0: set([1, 2]), 1: set([]), 2: set([])}
 EX_GRAPH1 = {0: set([1, 4, 5]), 1: set([2, 6]), 2: set([3]),
              3: set([0]), 4: set([1]), 5: set([2]), 6: set([])}
@@ -285,3 +286,18 @@ def make_random_graph(num_nodes, probablitiy):
 
 rnd_graph = make_random_graph(1000, 0.9)
 print in_degree_distribution(rnd_graph)
+
+
+def make_dpa_graph(num_nodes, avg_degree):
+    """
+    Creates a graph with num_nodes amout of nodes
+    and average in degree of avg_degree.
+    Prefers popular nodes
+    """
+    full_graph = make_complete_graph(avg_degree)
+    trial = dpa_trial.DPATrial(avg_degree)
+    for node in range(avg_degree, num_nodes):
+        full_graph[node] = trial.run_trial(avg_degree)
+    return full_graph
+
+

@@ -64,7 +64,7 @@ def plot_in_degree_dist():
     plt.show()
 
 
-plot_in_degree_dist()
+#plot_in_degree_dist()
 
 
 def plot_graph(graph):
@@ -73,9 +73,12 @@ def plot_graph(graph):
     total = float(sum(in_degrees.keys()))
     in_degrees_norm = {key: val / total for key, val in in_degrees.iteritems()}
 
-    # plt.xscale('log')
-    # plt.yscale('log')
+    plt.xscale('log')
+    plt.yscale('log')
     plt.plot(in_degrees_norm.keys(), in_degrees_norm.values(), "bo")
+    plt.xlabel("log(In degree)")
+    plt.ylabel("log(Amount of nodes)")
+    plt.title("Distribution of in degree of nodes")
     plt.show()
 
 
@@ -90,4 +93,7 @@ def calc_average_out_degree(digraph):
 # graph_rnd = graph_degees_calc.rnd_graph
 # plot_graph(graph_rnd)
 
-print calc_average_out_degree(load_graph(CITATION_URL))
+#print calc_average_out_degree(load_graph(CITATION_URL))
+
+plot_graph(graph_degees_calc.make_dpa_graph(27000, 13))
+
