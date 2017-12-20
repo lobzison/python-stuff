@@ -3,6 +3,9 @@ Search graph, compute reilience
 """
 from collections import deque
 import random
+import urllib2
+import time
+import math
 
 GRAPH0 = {0: set([1]),
           1: set([0, 2]),
@@ -61,7 +64,7 @@ def largest_cc_size(ugraph):
     Returns size of the largest connected coponent
     """
     return 0 if not ugraph else max((len(neighbours)
-                                    for neighbours in cc_visited(ugraph)))
+                                     for neighbours in cc_visited(ugraph)))
 
 
 def compute_resilience(ugraph, attack_order):
@@ -73,10 +76,10 @@ def compute_resilience(ugraph, attack_order):
         """
         Mutates graph removing node, and connected edges
         """
+        neighbours = ugraph[node]
         graph.pop(node)
-        for edge in ugraph.values():
-            if node in edge:
-                edge.remove(node)
+        for edge in neighbours:
+            ugraph[edge].remove(node)
     graph = ugraph
     resilience = []
     for attack in attack_order:
@@ -86,4 +89,33 @@ def compute_resilience(ugraph, attack_order):
     return resilience
 
 
-print compute_resilience(GRAPH2, [1, 3, 5, 7, 2, 4, 6, 8])
+NETWORK_URL = "http://storage.googleapis.com/codeskulptor-alg/alg_rf7.txt"
+
+
+def load_graph(graph_url):
+    """
+    Function that loads a graph given the URL
+    for a text representation of the graph
+
+    Returns a dictionary that models a graph
+    """
+    graph_file = urllib2.urlopen(graph_url)
+    graph_text = graph_file.read()
+    graph_lines = graph_text.split('\n')
+    graph_lines = graph_lines[: -1]
+
+    print "Loaded graph with", len(graph_lines), "nodes"
+
+    answer_graph = {}
+    for line in graph_lines:
+        neighbors = line.split(' ')
+        node = int(neighbors[0])
+        answer_graph[node] = set([])
+        for neighbor in neighbors[1: -1]:
+            answer_graph[node].add(int(neighbor))
+
+    return answer_graph
+
+imported_graph = load_graph(NETWORK_URL)
+
+print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
