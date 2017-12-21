@@ -1,20 +1,20 @@
 import time
 
 #takes int returns tuple
-def make_tree(d):
+cdef tuple make_tree(int d):
     if d > 0:
         d -= 1
         return (make_tree(d), make_tree(d))
     return (None, None)
 
 #takes tuple, returns int
-def check_tree(node):
+cdef int check_tree(tuple node):
     if node[0] is None:
         return 1
     return 1 + check_tree(node[0]) + check_tree(node[1])
 
 #takes tupe returns int
-def make_check(itde):
+cdef int make_check(tuple itde):
     d = itde[1]
     return check_tree(make_tree(d))
 
