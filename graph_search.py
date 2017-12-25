@@ -6,6 +6,7 @@ import random
 import urllib2
 import time
 import math
+import graph_degees_calc
 
 GRAPH0 = {0: set([1]),
           1: set([0, 2]),
@@ -118,4 +119,25 @@ def load_graph(graph_url):
 
 imported_graph = load_graph(NETWORK_URL)
 
-print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
+#print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
+
+
+print graph_degees_calc.make_random_graph_undir(10, 0.9)
+print graph_degees_calc.make_upa_graph(10, 3)
+
+
+def random_order(graph):
+    """
+    Takes graph, returns nodes in random order
+    """
+    nodes = graph.keys()
+    random.shuffle(nodes)
+    return nodes
+
+
+make_random_graph_undir(num_nodes, probablitiy):
+
+
+
+print compute_resilience(imported_graph, random_order(imported_graph))
+

@@ -301,3 +301,30 @@ def make_dpa_graph(num_nodes, avg_degree):
     return full_graph
 
 
+def make_random_graph_undir(num_nodes, probablitiy):
+    res = {}
+    for node in range(num_nodes):
+        res[node] = set([])
+    for node_from in range(num_nodes):
+        for node_to in range(num_nodes):
+            prob1 = random.random()
+            if probablitiy < prob1 and node_from != node_to:
+                res[node_from].add(node_to)
+                res[node_to].add(node_from)
+    return res
+
+
+def make_upa_graph(num_nodes, avg_degree):
+    """
+    Creates a graph with num_nodes amout of nodes
+    and average in degree of avg_degree.
+    Prefers popular nodes
+    """
+    full_graph = make_complete_graph(avg_degree)
+    trial = dpa_trial.DPATrial(avg_degree)
+    for node in range(avg_degree, num_nodes):
+        neighbors = trial.run_trial(avg_degree)
+        full_graph[node] = neighbors
+        for neighbour in neighbors:
+            full_graph[neighbour].add(node)
+    return full_graph
