@@ -1,34 +1,33 @@
 
+import sys
+import multiprocessing as mp
 
-# takes int returns tuple
+
 def make_tree(d):
+
     if d > 0:
         d -= 1
-        return (make_tree2(d), make_tree2(d))
+        return (make_tree(d), make_tree(d))
     return (None, None)
-
-# takes tuple, returns int
-def make_tree2(d):
-    return (make_tree(d), make_tree(d)) 
 
 
 def check_tree(node):
-    if node[0] is None:
+
+    (l, r) = node
+    if l is None:
         return 1
-    return 1 + check_tree2(node[0]) + check_tree2(node[1])
-
-def check_tree2(node):
-    return 1 + check_tree(node[0]) + check_tree(node[1])
+    else:
+        return 1 + check_tree(l) + check_tree(r)
 
 
-# takes tupe returns int
-def make_check(itde):
-    d = itde[1]
-    return check_tree(make_tree(d))
+def make_check(itde, make=make_tree, check=check_tree):
 
+    i, d = itde
+    return check(make(d))
 
 
 def get_argchunks(i, d, chunksize=5000):
+
     assert chunksize % 2 == 0
     chunk = []
     for k in range(1, i + 1):
@@ -40,12 +39,15 @@ def get_argchunks(i, d, chunksize=5000):
         yield chunk
 
 
-
 def main(n, min_depth=4):
 
     max_depth = max(min_depth + 2, n)
     stretch_depth = max_depth + 1
-    chunkmap = map
+    if mp.cpu_count() > 1:
+        pool = mp.Pool()
+        chunkmap = pool.map
+    else:
+        chunkmap = map
 
     print('stretch tree of depth {0}\t check: {1}'.format(
           stretch_depth, make_check((0, stretch_depth))))
@@ -56,10 +58,13 @@ def main(n, min_depth=4):
     for d in range(min_depth, stretch_depth, 2):
         i = 2 ** (mmd - d)
         cs = 0
-        for argchunk in get_argchunks(i, d):
+        for argchunk in get_argchunks(i,d):
             cs += sum(chunkmap(make_check, argchunk))
         print('{0}\t trees of depth {1}\t check: {2}'.format(i, d, cs))
 
     print('long lived tree of depth {0}\t check: {1}'.format(
           max_depth, check_tree(long_lived_tree)))
 
+
+if __name__ == '__main__':
+    main(int(sys.argv[1]))

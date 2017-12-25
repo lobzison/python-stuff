@@ -4,10 +4,6 @@ Search graph, compute reilience
 from collections import deque
 import random
 import urllib2
-import time
-import math
-import graph_degees_calc
-import matplotlib.pyplot as plt
 
 GRAPH0 = {0: set([1]),
           1: set([0, 2]),
@@ -118,56 +114,11 @@ def load_graph(graph_url):
 
     return answer_graph
 
-def random_order(graph):
-    """
-    Takes graph, returns nodes in random order
-    """
-    nodes = graph.keys()
-    random.shuffle(nodes)
-    return nodes
-
-
-print graph_degees_calc.edge_count(graph_degees_calc.make_random_graph_undir(1239, 0.0039))
-
-# print("--------")
 imported_graph = load_graph(NETWORK_URL)
-# random_graph = graph_degees_calc.make_random_graph_undir(1239, 0.004)
-# upa_graph = graph_degees_calc.make_upa_graph(1239, 3)
-
-# imported_graph_nc = range(len(imported_graph.keys()) + 1)
-# random_graph_nc = range(len(random_graph.keys()) + 1)
-# upa_graph_nc = range(len(upa_graph.keys()) + 1)
-
-# imported_graph_rs = compute_resilience(imported_graph, random_order(imported_graph))
-# random_graph_rs = compute_resilience(random_graph, random_order(random_graph))
-# upa_graph_rs = compute_resilience(upa_graph, random_order(upa_graph))
-
-# print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
-
-# print graph_degees_calc.edge_count(imported_graph)
-print graph_degees_calc.edge_count(graph_degees_calc.make_random_graph_undir(1239, 0.0039))
-# print graph_degees_calc.edge_count(graph_degees_calc.make_upa_graph(1239, 3))
 
 
+print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
 
 
-
-def legend_example(*args):
-    """
-    Plot multiple lines on one plot
-    """
-    for item in args:
-        plt.plot(item[2], item[1], item[3], label=item[0])
-    plt.legend(loc='upper right')
-    plt.xlabel("Number of nodes removed")
-    plt.ylabel("Largest connected component")
-    plt.title("Comparison of resilience of graphs")
-    plt.show()
-
-
-# legend_example(("Computer network graph", imported_graph_rs, imported_graph_nc, '-b'),
-#                ("ER graph(p = 0.004)", random_graph_rs, random_graph_nc, '-r'),
-#                ("UPA graph(m = 3)", upa_graph_rs, upa_graph_nc, '-g'))
-
-
-# print compute_resilience(imported_graph, random_order(imported_graph))
+def func(double x):
+    print x

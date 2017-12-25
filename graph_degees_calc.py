@@ -305,12 +305,14 @@ def make_random_graph_undir(num_nodes, probablitiy):
     res = {}
     for node in range(num_nodes):
         res[node] = set([])
+    nodes_to = range(num_nodes)
     for node_from in range(num_nodes):
-        for node_to in range(num_nodes):
+        for node_to in nodes_to:
             prob1 = random.random()
-            if probablitiy < prob1 and node_from != node_to:
+            if probablitiy > prob1 and node_from != node_to:
                 res[node_from].add(node_to)
                 res[node_to].add(node_from)
+        nodes_to.remove(node_from)
     return res
 
 
