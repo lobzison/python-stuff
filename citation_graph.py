@@ -64,7 +64,7 @@ def plot_in_degree_dist():
     plt.show()
 
 
-#plot_in_degree_dist()
+# plot_in_degree_dist()
 
 
 def plot_graph(graph):
@@ -88,12 +88,12 @@ def calc_average_out_degree(digraph):
     total_out = sum(out_degree.values())
     return total_out / num
 
-#plot_rnd_graph()
+# plot_rnd_graph()
 
 # graph_rnd = graph_degees_calc.rnd_graph
 # plot_graph(graph_rnd)
 
-#print calc_average_out_degree(load_graph(CITATION_URL))
+# print calc_average_out_degree(load_graph(CITATION_URL))
+
 
 plot_graph(graph_degees_calc.make_dpa_graph(27000, 13))
-

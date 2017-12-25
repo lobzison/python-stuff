@@ -5,7 +5,8 @@ import urllib2
 import random
 import time
 import math
-import graph_search
+import graph_search as gs
+import graph_degees_calc as gdc
 
 GRAPH2 = {1: set([2, 4, 6, 8]),
           2: set([1, 3, 5, 7]),
@@ -15,6 +16,7 @@ GRAPH2 = {1: set([2, 4, 6, 8]),
           6: set([1, 3, 5, 7]),
           7: set([2, 4, 6, 8]),
           8: set([1, 3, 5, 7])}
+
 
 def copy_graph(graph):
     """
@@ -85,5 +87,29 @@ def fast_target_order(ugraph):
             delete_node(ugraph, elem)
     return result_order
 
-print(fast_target_order(graph_search.imported_graph))
-#print graph_search.imported_graph[148]
+
+#test_graph = gdc.make_upa_graph(1300, 5)
+
+
+def time_run(fnk):
+    """Times fnk on upa graph"""
+    xval = []
+    yval = []
+    for n in range(10, 1000, 10):
+        xval.append(n)
+        graph = gdc.make_upa_graph(n, 5)
+        c_time = time.time()
+        fnk(graph)
+        time_passed = time.time() - c_time
+        yval.append(time_passed)
+    return xval, yval
+
+
+# normal_x, normal_y = time_run(targeted_order)
+# fast_x, fast_y = time_run(fast_target_order)
+
+# gs.legend_example2(("targeted_order", normal_y, normal_x, '-b'),
+#                ("fast_target_order", fast_y, fast_x, '-r'))
+
+#print(fast_target_order(test_graph))
+# print graph_search.imported_graph[148]

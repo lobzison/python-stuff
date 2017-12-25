@@ -3,6 +3,7 @@ Simple graph distionary representation and calculation
 """
 import random
 import dpa_trial
+import upa_trial
 EX_GRAPH0 = {0: set([1, 2]), 1: set([]), 2: set([])}
 EX_GRAPH1 = {0: set([1, 4, 5]), 1: set([2, 6]), 2: set([3]),
              3: set([0]), 4: set([1]), 5: set([2]), 6: set([])}
@@ -323,7 +324,7 @@ def make_upa_graph(num_nodes, avg_degree):
     Prefers popular nodes
     """
     full_graph = make_complete_graph(avg_degree)
-    trial = dpa_trial.DPATrial(avg_degree)
+    trial = upa_trial.UPATrial(avg_degree)
     for node in range(avg_degree, num_nodes):
         neighbors = trial.run_trial(avg_degree)
         full_graph[node] = neighbors
