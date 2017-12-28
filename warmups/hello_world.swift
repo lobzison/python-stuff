@@ -79,4 +79,8 @@ for i in 0..<count { // if youll use ... insted of ..< it will throw an error
     print("Person \(i + 1) is called \(names[i])")
 }
 
-
+i = 9
+print(i) 
+for i in 0..<10 { // inside loop we overrite the i variable with a new one
+    print(i)
+}
