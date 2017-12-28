@@ -34,3 +34,10 @@ print("lest try to compare tuples")
 print((1, "a") == (1, "a"))
 print((2, "a") > (1, "a"))
 print("cant compare print((2, \"a\") > (1, 0.0)), datatypes should be the same")
+
+print("conditional operator ? :")
+while i < 10 {
+    print(i)
+    print(i > 6 ? "more then 6" : "less than 6")
+    i += 1
+}
