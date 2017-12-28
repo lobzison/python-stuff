@@ -93,17 +93,19 @@ def closest_pair_strip(cluster_list, horiz_center, half_width):
     result = (float("inf"), -1, -1)
     for cluster_idx1 in range(size - 1):
         for cluster_idx2 in range(cluster_idx1 + 1, min(cluster_idx1 + 4, size)):
-            dist_clust = pair_distance(center_area_clusters, cluster_idx1, cluster_idx2)
-            result = min(result, (dist_clust[0], center_area_clusters[cluster_idx1].horiz_center(), center_area_clusters[cluster_idx2].horiz_center()))
+            orig_idx1 = cluster_list.index(center_area_clusters[cluster_idx1])
+            orig_idx2 = cluster_list.index(center_area_clusters[cluster_idx2])
+            dist_clust = pair_distance(cluster_list, orig_idx1, orig_idx2)
+            result = min(result, dist_clust)
     return result
 #                                                   horiz_pos, vert_pos, population, risk
-print closest_pair_strip([alg_cluster.Cluster(set([]), 0, 0, 1, 0),
-                          alg_cluster.Cluster(set([]), 0, 1, 1, 0),
-                          alg_cluster.Cluster(set([]), 0, 2, 1, 0),
-                          alg_cluster.Cluster(set([]), 0, 3, 1, 0)],
-                         0.0, 1.0)
 
-#closest_pair_strip([alg_cluster.Cluster(set([]), 0, 0, 1, 0), alg_cluster.Cluster(set([]), 1, 0, 1, 0), alg_cluster.Cluster(set([]), 2, 0, 1, 0), alg_cluster.Cluster(set([]), 3, 0, 1, 0)], 1.5, 1.0) expected one of the tuples in set([(1.0, 1, 2)]) but received (Exception: TypeError) "unsupported operand type(s) for -: 'instancemethod' and 'float'" at line 92, in closest_pair_strip
+print closest_pair_strip([alg_cluster.Cluster(set([]), 1.0, 1.0, 1, 0),
+                          alg_cluster.Cluster(set([]), 1.0, 5.0, 1, 0),
+                          alg_cluster.Cluster(set([]), 1.0, 4.0, 1, 0),
+                          alg_cluster.Cluster(set([]), 1.0, 7.0, 1, 0)],
+                         1.0, 3.0)
+
 #closest_pair_strip([alg_cluster.Cluster(set([]), 0, 0, 1, 0), alg_cluster.Cluster(set([]), 0, 1, 1, 0), alg_cluster.Cluster(set([]), 0, 2, 1, 0), alg_cluster.Cluster(set([]), 0, 3, 1, 0)], 0.0, 1.0) expected one of the tuples in set([(1.0, 2, 3), (1.0, 0, 1), (1.0, 1, 2)]) but received (1.0, 0, 0)
 # fast_closest_pair([alg_cluster.Cluster(set([]), 0, 0, 1, 0), alg_cluster.Cluster(set([]), 1, 0, 1, 0), alg_cluster.Cluster(set([]), 2, 0, 1, 0), alg_cluster.Cluster(set([]), 3, 0, 1, 0)]) expected one of the tuples in set([(1.0, 1, 2), (1.0, 0, 1), (1.0, 2, 3)]) but received (Exception: TypeError) "'tuple' object does not support item assignment" at line 71, in fast_closest_pair
 #print fast_closest_pair([alg_cluster.Cluster(set([]), 0, 0, 1, 0), alg_cluster.Cluster(set([]), 1, 0, 1, 0), alg_cluster.Cluster(set([]), 2, 0, 1, 0), alg_cluster.Cluster(set([]), 3, 0, 1, 0)])
