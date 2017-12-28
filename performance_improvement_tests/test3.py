@@ -10,5 +10,3 @@ import time
 start = time.time()
 benchmark_try1.main(21)
 print time.time() - start
-
-1§2§	a
