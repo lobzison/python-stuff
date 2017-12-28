@@ -2,21 +2,22 @@
 Breath first search of a graph
 """
 
+
 class Queue():
     """Data structure queue"""
-    
+
     def __init__(self):
         self.queue = []
-        
+
     def __len__(self):
         return len(self.queue)
-    
+
     def __str__(self):
         return str(self.queue)
-        
+
     def enque(self, value):
         self.queue.append(value)
-        
+
     def dequeue(self):
         return self.queue.pop(0)
 
@@ -40,10 +41,10 @@ def calc_distance(graph, node):
                 neighbours.enque(neighbour)
                 distance[neighbour] = distance[current_node] + 1
     return distance
-                
-    
-    
-graph = {0: set([1, 2]), 1: set([0, 3]), 2: set([0]), 3: set([1, 4]), 4: set([3])}
+
+
+graph = {0: set([1, 2]), 1: set([0, 3]), 2: set([0]),
+         3: set([1, 4]), 4: set([3])}
 
 
 print calc_distance(graph, 0)

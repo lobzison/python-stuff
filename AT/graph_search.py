@@ -10,6 +10,7 @@ import graph_degees_calc
 import matplotlib.pyplot as plt
 import copy
 
+
 GRAPH0 = {0: set([1]),
           1: set([0, 2]),
           2: set([1, 3]),
