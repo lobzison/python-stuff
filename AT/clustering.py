@@ -143,12 +143,10 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     cluster_centres = [(cluster.horiz_center(),
                         cluster.vert_center())
                        for cluster in cluster_list[initial_clusters - num_clusters:]]
-    print "---------"
-    print cluster_list[initial_clusters - num_clusters:]
-    print "---------"
     for iter in range(num_iterations):
         new_clusters = [alg_cluster.Cluster(set([]), cent[0], cent[1], 0, 0)
                         for cent in cluster_centres]
+        clut_pair_list = []
         for init_clust in cluster_list:
             min_dist = float("inf")
             min_dist_pair = (min_dist, -1, -1)
@@ -159,9 +157,11 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
                     min_dist = clust_pair[0]
                     min_dist_pair = clust_pair
             # merge cluster to closest
-            min_dist_pair[1].merge_clusters(min_dist_pair[2])
-            cluster_centres = [(clust.horiz_center(), clust.vert_center())
-                               for clust in new_clusters]
+            clut_pair_list.append(min_dist_pair)
+        for pair in clut_pair_list:
+            pair[1].merge_clusters(pair[2])
+        cluster_centres = [(clust.horiz_center(), clust.vert_center())
+                           for clust in new_clusters]
     return new_clusters
             
     
