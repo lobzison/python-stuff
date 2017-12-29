@@ -138,8 +138,15 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     and number of iterations
     Output: List of clusters whose length is num_clusters
     """
+    initial_clusters = len(cluster_list)
+    cluster_centres = [(coord, coord) for coord in range(num_clusters)]
+    for iter in range(num_iterations):
+        new_clusters = [set([alg_cluster.Cluster(0, cent[0], cent[1], 0, 0)])
+                        for cent in cluster_centres]
+        for idx in range(initial_clusters):
+        print new_clusters
+    
 
-    # position initial clusters at the location of clusters
-    # with largest populations
+    return cluster_centres
 
-    return []
+print kmeans_clustering([], 10, 9)
