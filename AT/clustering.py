@@ -138,10 +138,14 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     and number of iterations
     Output: List of clusters whose length is num_clusters
     """
+    cluster_list.sort(key = lambda x: x.total_population())
     initial_clusters = len(cluster_list)
-    cluster_centres = [(cluster_list[index].horiz_center(), cluster_list[index].vert_center())
-                       for index in range(initial_clusters)
-                       if index < num_clusters]
+    cluster_centres = [(cluster.horiz_center(),
+                        cluster.vert_center())
+                       for cluster in cluster_list[initial_clusters - num_clusters:]]
+    print "---------"
+    print cluster_list[initial_clusters - num_clusters:]
+    print "---------"
     for iter in range(num_iterations):
         new_clusters = [alg_cluster.Cluster(set([]), cent[0], cent[1], 0, 0)
                         for cent in cluster_centres]
