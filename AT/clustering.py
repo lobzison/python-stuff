@@ -154,8 +154,9 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
                             for new_cluster in new_clusters):
                 if clust_pair[0] < min_dist_pair[0]:
                     min_dist_pair = clust_pair
-            # merge cluster to closest
+            # build a list with all cluster pairs
             clust_pair_list.append(min_dist_pair)
+        # merge all clusters into new_clusters
         for pair in clust_pair_list:
             pair[1].merge_clusters(pair[2])
         cluster_centres = [(clust.horiz_center(), clust.vert_center())
