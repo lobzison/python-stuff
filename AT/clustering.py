@@ -138,16 +138,17 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     and number of iterations
     Output: List of clusters whose length is num_clusters
     """
-    cluster_list.sort(key = lambda x: x.total_population())
-    initial_clusters = len(cluster_list)
+    cluster_list_copy = [cluster.copy() for cluster in cluster_list]
+    cluster_list_copy.sort(key = lambda x: x.total_population())
+    initial_clusters = len(cluster_list_copy)
     cluster_centres = [(cluster.horiz_center(),
                         cluster.vert_center())
-                       for cluster in cluster_list[initial_clusters - num_clusters:]]
-    for iter in range(num_iterations):
+                       for cluster in cluster_list_copy[initial_clusters - num_clusters:]]
+    for _ in range(num_iterations):
         new_clusters = [alg_cluster.Cluster(set([]), cent[0], cent[1], 0, 0)
                         for cent in cluster_centres]
         clut_pair_list = []
-        for init_clust in cluster_list:
+        for init_clust in cluster_list_copy:
             min_dist = float("inf")
             min_dist_pair = (min_dist, -1, -1)
             # find pair of cluster with minimum distance between them
@@ -163,12 +164,3 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
         cluster_centres = [(clust.horiz_center(), clust.vert_center())
                            for clust in new_clusters]
     return new_clusters
-            
-    
-
-    return cluster_centres
-
-print kmeans_clustering([alg_cluster.Cluster(set(["1"]), 3, 4, 10, 0),
-                         alg_cluster.Cluster(set(["2"]), 5, 6, 10, 0),
-                         alg_cluster.Cluster(set(["3"]), 0, 1, 10, 0),
-                         alg_cluster.Cluster(set(["4"]), 1, 1, 10, 0)], 15, 1)
