@@ -139,14 +139,32 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     Output: List of clusters whose length is num_clusters
     """
     initial_clusters = len(cluster_list)
-    cluster_centres = [(coord, coord) for coord in range(num_clusters)]
+    cluster_centres = [(cluster_list[index].horiz_center(), cluster_list[index].vert_center())
+                       for index in range(initial_clusters)
+                       if index < num_clusters]
     for iter in range(num_iterations):
-        new_clusters = [set([alg_cluster.Cluster(0, cent[0], cent[1], 0, 0)])
+        new_clusters = [alg_cluster.Cluster(set([]), cent[0], cent[1], 0, 0)
                         for cent in cluster_centres]
-        for idx in range(initial_clusters):
-        print new_clusters
+        for init_clust in cluster_list:
+            min_dist = float("inf")
+            min_dist_pair = (min_dist, -1, -1)
+            # find pair of cluster with minimum distance between them
+            for clust_pair in ((init_clust.distance(new_cluster), new_cluster, init_clust)
+                            for new_cluster in new_clusters):
+                if clust_pair[0] < min_dist:
+                    min_dist = clust_pair[0]
+                    min_dist_pair = clust_pair
+            # merge cluster to closest
+            min_dist_pair[1].merge_clusters(min_dist_pair[2])
+            cluster_centres = [(clust.horiz_center(), clust.vert_center())
+                               for clust in new_clusters]
+    return new_clusters
+            
     
 
     return cluster_centres
 
-print kmeans_clustering([], 10, 9)
+print kmeans_clustering([alg_cluster.Cluster(set(["1"]), 3, 4, 10, 0),
+                         alg_cluster.Cluster(set(["2"]), 5, 6, 10, 0),
+                         alg_cluster.Cluster(set(["3"]), 0, 1, 10, 0),
+                         alg_cluster.Cluster(set(["4"]), 1, 1, 10, 0)], 15, 1)
