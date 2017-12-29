@@ -9,7 +9,6 @@ kmeans_clustering(cluster_list, num_clusters, num_iterations)
 where cluster_list is a 2D list of clusters in the plane
 """
 
-import math
 import alg_cluster
 
 
@@ -139,10 +138,12 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
     Output: List of clusters whose length is num_clusters
     """
     cluster_list_copy = [cluster.copy() for cluster in cluster_list]
-    cluster_list_copy.sort(key = lambda x: x.total_population())
+    cluster_list_copy.sort(key=lambda x: x.total_population())
     cluster_centres = [(cluster.horiz_center(),
                         cluster.vert_center())
-                       for cluster in cluster_list_copy[len(cluster_list_copy) - num_clusters:]]
+                       for cluster in
+                       cluster_list_copy[len(cluster_list_copy) -
+                                         num_clusters:]]
     for _ in range(num_iterations):
         new_clusters = [alg_cluster.Cluster(set([]), cent[0], cent[1], 0, 0)
                         for cent in cluster_centres]
@@ -150,8 +151,9 @@ def kmeans_clustering(cluster_list, num_clusters, num_iterations):
         for init_clust in cluster_list_copy:
             min_dist_pair = (float("inf"), -1, -1)
             # find pair of cluster with minimum distance between them
-            for clust_pair in ((init_clust.distance(new_cluster), new_cluster, init_clust)
-                            for new_cluster in new_clusters):
+            for clust_pair in ((init_clust.distance(new_cluster),
+                                new_cluster, init_clust)
+                               for new_cluster in new_clusters):
                 if clust_pair[0] < min_dist_pair[0]:
                     min_dist_pair = clust_pair
             # build a list with all cluster pairs
