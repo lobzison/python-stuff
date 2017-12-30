@@ -11,7 +11,6 @@ where cluster_list is a 2D list of clusters in the plane
 
 import alg_cluster
 
-
 ######################################################
 # Code for closest pairs of clusters
 
