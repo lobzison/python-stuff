@@ -47,5 +47,14 @@ class DistanceTest(unittest.TestCase):
         self.assertEqual(sd.e_distance((18, -3), (-2, 6)), math.sqrt(481))
 
 
+class BruteForaceDistanceTest(unittest.TestCase):
+    """Test case for bnrute force search for minimum pistance pair"""
+
+    def test_empty(self):
+        """Empty list returns infinity as a distance and None as coordinats"""
+        self.assertEqual(sd.brute_force([]),
+                         (float("inf"), (None, None), (None, None)))
+
+
 if __name__ == '__main__':
     unittest.main()
