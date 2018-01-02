@@ -55,6 +55,11 @@ class BruteForaceDistanceTest(unittest.TestCase):
         self.assertEqual(sd.brute_force([]),
                          (float("inf"), (None, None), (None, None)))
 
+    def test_zero(self):
+        """Same points == 0 distance"""
+        self. assertEqual(sd.brute_force([(0, 0), (0, 0), (0, 0)]),
+                          (0, (0, 0), (0, 0)))
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -16,6 +16,8 @@ def brute_force(points_list):
        returns a tuple of format (distance, (x1, y1), (x2, y2))"""
     min_dist = (float("inf"), (None, None), (None, None))
     for point1 in points_list:
-        for poin2 in points_list:
-            pass
+        for point2 in points_list:
+            new_dist = (e_distance(point1, point2), point1, point2)
+            if new_dist[0] < min_dist[0]:
+                min_dist = new_dist
     return min_dist
