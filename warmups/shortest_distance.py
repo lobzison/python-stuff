@@ -18,6 +18,9 @@ def brute_force(points_list):
     for point1 in points_list:
         for point2 in points_list:
             new_dist = (e_distance(point1, point2), point1, point2)
-            if new_dist[0] < min_dist[0]:
+            print new_dist
+            if new_dist[0] < min_dist[0] and point1 is not point2:
                 min_dist = new_dist
     return min_dist
+
+print brute_force([(64, -59), (-1, -15), (34, 32), (51, 55), (65, 14), (-98, 80), (-21, -23)])

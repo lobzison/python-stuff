@@ -1,6 +1,7 @@
 import shortest_distance as sd
 import unittest
 import math
+import random
 
 
 class DistanceTest(unittest.TestCase):
@@ -47,6 +48,13 @@ class DistanceTest(unittest.TestCase):
         self.assertEqual(sd.e_distance((18, -3), (-2, 6)), math.sqrt(481))
 
 
+def gen_tuple_list(num):
+    """Generates list of random tuples in format
+    (x, y) where x and y >-100 and <100"""
+    return [(random.randint(-99, 99), random.randint(-99, 99))
+            for _ in range(num)]
+
+
 class BruteForaceDistanceTest(unittest.TestCase):
     """Test case for bnrute force search for minimum pistance pair"""
 
@@ -60,6 +68,16 @@ class BruteForaceDistanceTest(unittest.TestCase):
         self. assertEqual(sd.brute_force([(0, 0), (0, 0), (0, 0)]),
                           (0, (0, 0), (0, 0)))
 
+    def test_nonzero1(self):
+        """Same distance, return first"""
+        self.assertEqual(sd.brute_force([(0, 0), (1, 1), (2, 2), (3, 3)]),
+                         (math.sqrt(2), (0, 0), (1, 1)))
 
+    def test_nonzero2(self):
+        """different distance"""
+        self.assertEqual(sd.brute_force([(64, -59), (-1, -15), (34, 32), (51, 55), (65, 14), (-98, 80), (-21, -23)]),
+                         (math.sqrt(20 ** 2 + 8 ** 2), (-1, -15), (-21, -23)))
+
+print gen_tuple_list(7)
 if __name__ == '__main__':
     unittest.main()
