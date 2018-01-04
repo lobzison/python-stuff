@@ -81,6 +81,6 @@ class BruteForaceDistanceTest(unittest.TestCase):
                                          (-21, -23)]),
                          (math.sqrt(20 ** 2 + 8 ** 2), (-1, -15), (-21, -23)))
 
-print sd.divide_and_conquer(gen_tuple_list(10))
+print sd.divide_and_conquer(gen_tuple_list(100))
 if __name__ == '__main__':
     unittest.main()

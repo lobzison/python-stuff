@@ -26,10 +26,30 @@ def brute_force(points_list):
 
 def divide_and_conquer(points_list):
     """
-    Takes list of tuples of format (x, y),
+    Takes list of tuples of format (x, y) sorted in x ASC,
     returns a tuple of format (distance, (x1, y1), (x2, y2))
     takes O(N^2)"""
-    list_copy = list(points_list)
-    # step 1 - sort in ascending order of x
-    list_copy.sort(key=lambda x: x[0])
-    return list_copy
+    # step 0
+    num_points = len(points_list)
+    if num_points <= 3:
+        return brute_force(points_list)
+    mid_index = num_points // 2
+    left_result = divide_and_conquer(points_list[:mid_index])
+    right_results = divide_and_conquer(points_list[mid_index:])
+    result = min(left_result, (right_results[0],
+                               (right_results[1][0] +
+                                mid_index, right_results[1][1]),
+                               (right_results[2][0] +
+                                mid_index, right_results[2][1])))
+    mid_strip_disrt = (points_list[mid_index - 1][0] +
+                       points_list[mid_index][0]) / 2
+    result = min(result, colsest_pair_middle(points_list,
+                                             mid_strip_disrt,
+                                             result[0]))
+
+    return result
+
+
+def colsest_pair_middle(points_list, mid, dummy):
+    """Finds cloasest pairs in middle"""
+    return (float("inf"), (None, None), (None, None))
