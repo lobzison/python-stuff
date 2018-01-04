@@ -75,9 +75,12 @@ class BruteForaceDistanceTest(unittest.TestCase):
 
     def test_nonzero2(self):
         """different distance"""
-        self.assertEqual(sd.brute_force([(64, -59), (-1, -15), (34, 32), (51, 55), (65, 14), (-98, 80), (-21, -23)]),
+        self.assertEqual(sd.brute_force([(64, -59), (-1, -15),
+                                         (34, 32), (51, 55),
+                                         (65, 14), (-98, 80),
+                                         (-21, -23)]),
                          (math.sqrt(20 ** 2 + 8 ** 2), (-1, -15), (-21, -23)))
 
-print gen_tuple_list(7)
+print sd.divide_and_conquer(gen_tuple_list(10))
 if __name__ == '__main__':
     unittest.main()
