@@ -172,6 +172,7 @@ def fast_target_order(ugraph):
             delete_node(ugraph_c, elem)
     return result_order
 
+
 # print("--------")
 imported_graph = load_graph(NETWORK_URL)
 random_graph = graph_degees_calc.make_random_graph_undir(1239, 0.004)
@@ -182,8 +183,10 @@ imported_graph_nc = range(len(imported_graph.keys()) + 1)
 random_graph_nc = range(len(random_graph.keys()) + 1)
 upa_graph_nc = range(len(upa_graph.keys()) + 1)
 
-imported_graph_rs = compute_resilience(imported_graph, fast_target_order(imported_graph))
-random_graph_rs = compute_resilience(random_graph, fast_target_order(random_graph))
+imported_graph_rs = compute_resilience(
+    imported_graph, fast_target_order(imported_graph))
+random_graph_rs = compute_resilience(
+    random_graph, fast_target_order(random_graph))
 upa_graph_rs = compute_resilience(upa_graph, fast_target_order(upa_graph))
 
 # print compute_resilience(imported_graph,[1, 2, 3, 4, 5, 6, 7])
@@ -205,6 +208,7 @@ def legend_example(*args):
     plt.title("Comparison of resilience of graphs")
     plt.show()
 
+
 def legend_example2(*args):
     """
     Plot multiple lines on one plot
@@ -214,9 +218,9 @@ def legend_example2(*args):
     plt.legend(loc='upper right')
     plt.xlabel("Number of nodes in GPA graph(m = 5)")
     plt.ylabel("Time passed in ms")
-    plt.title("Running time of fast vs normal target order algorithms - Desktop Python")
+    plt.title(
+        "Running time of fast vs normal target order algorithms - Desktop Python")
     plt.show()
-
 
 
 legend_example(("Computer network graph", imported_graph_rs, imported_graph_nc, '-b'),
