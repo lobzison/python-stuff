@@ -66,7 +66,7 @@ def colsest_pair_middle(points_list, mid, half_width):
             result = min(result, result)
             dist = e_distance(middle_points[point1_idx],
                               middle_points[point2_idx])
-            result = min(result, (dist, 
-            	                  middle_points[point1_idx],
+            result = min(result, (dist,
+                                  middle_points[point1_idx],
                                   middle_points[point2_idx]))
     return result

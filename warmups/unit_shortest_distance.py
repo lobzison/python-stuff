@@ -82,6 +82,19 @@ class BruteForaceDistanceTest(unittest.TestCase):
                          (math.sqrt(20 ** 2 + 8 ** 2), (-1, -15), (-21, -23)))
 
 
-sd.divide_and_conquer(gen_tuple_list(100))
+class DivideAndConquer(unittest.TestCase):
+    """
+    Test cases for divide and conquer realisation,
+    through comparing it to hte brute force solution
+    """
+
+    def test_random_1(self):
+        """Test on sample size 10"""
+        sample_size = 10
+        points_list = gen_tuple_list(sample_size)
+        self.assertEqual(sd.brute_force(points_list),
+                         sd.divide_and_conquer(points_list))
+
+
 if __name__ == '__main__':
     unittest.main()
