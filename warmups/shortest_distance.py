@@ -46,7 +46,6 @@ def divide_and_conquer(points_list):
     result = min(result, colsest_pair_middle(points_list,
                                              mid_strip_disrt,
                                              result[0]))
-    # print result
 
     return result
 
@@ -55,7 +54,6 @@ def colsest_pair_middle(points_list, mid, half_width):
     """Finds cloasest pairs in middle"""
     # take only points in middle strip
     # sort in Y ASC
-    # print points_list
     middle_points = [point for point in points_list
                      if abs(point[0] - mid) < half_width]
     middle_points.sort(key=lambda x: x[1])
@@ -69,5 +67,4 @@ def colsest_pair_middle(points_list, mid, half_width):
             result = min(result, (dist,
                                   middle_points[point1_idx],
                                   middle_points[point2_idx]))
-            # print result
     return result
