@@ -92,8 +92,31 @@ class DivideAndConquer(unittest.TestCase):
         """Test on sample size 10"""
         sample_size = 10
         points_list = gen_tuple_list(sample_size)
-        self.assertEqual(sd.brute_force(points_list),
-                         sd.divide_and_conquer(points_list))
+        brute_force_res = sd.brute_force(points_list)
+        points_list.sort(key=lambda x: x[0])
+        divide_res = sd.divide_and_conquer(points_list)
+        self.assertEqual(brute_force_res[0],
+                         divide_res[0])
+
+    def test_random_2(self):
+        """Test on sample size 100"""
+        sample_size = 100
+        points_list = gen_tuple_list(sample_size)
+        brute_force_res = sd.brute_force(points_list)
+        points_list.sort(key=lambda x: x[0])
+        divide_res = sd.divide_and_conquer(points_list)
+        self.assertEqual(brute_force_res[0],
+                         divide_res[0])
+
+    def test_random_3(self):
+        """Test on sample size 1000"""
+        sample_size = 1000
+        points_list = gen_tuple_list(sample_size)
+        brute_force_res = sd.brute_force(points_list)
+        points_list.sort(key=lambda x: x[0])
+        divide_res = sd.divide_and_conquer(points_list)
+        self.assertEqual(brute_force_res[0],
+                         divide_res[0])
 
 
 if __name__ == '__main__':
