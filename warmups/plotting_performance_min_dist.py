@@ -45,7 +45,7 @@ def time_run_divide(fnk, runs):
 
 
 def plot():
-    runs = 1000
+    runs = 200
     time_brute = time_run_brute(sd.brute_force, runs)
     time_divide = time_run_divide(sd.divide_and_conquer, runs)
     plt.plot(time_brute[0], time_brute[1], '-r', label="Brute force time")

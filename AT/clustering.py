@@ -14,6 +14,7 @@ import alg_cluster
 ######################################################
 # Code for closest pairs of clusters
 
+
 def pair_distance(cluster_list, idx1, idx2):
     """
     Helper function that computes Euclidean distance
