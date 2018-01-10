@@ -15,6 +15,7 @@ import random
 import urllib2
 import alg_cluster
 import clustering_alaysis as ca
+import matplotlib.pyplot as plt
 
 # conditional imports
 if DESKTOP:
@@ -165,14 +166,25 @@ def hier_dist(data_url):
     for line in data_table:
         singleton_list.append(alg_cluster.Cluster(
             set([line[0]]), line[1], line[2], line[3], line[4]))
-        cluster_list = \
-        alg_project3_solution.hierarchical_clustering(singleton_list, 20)
+    cluster_list = \
+    alg_project3_solution.hierarchical_clustering(singleton_list, 20)
     res[20] = ca.compute_distortion(cluster_list, data_table)
+
     for num_clust in range(19, 5, -1):
         cluster_list = \
         alg_project3_solution.hierarchical_clustering(cluster_list, num_clust)
         res[num_clust] = ca.compute_distortion(cluster_list, data_table)
     return res
 
-run_example()
-print hier_dist(DATA_111_URL)
+#run_example()
+data_url = DATA_896_URL
+h1 = hier_dist(data_url)
+k1 = kmeans_dist(data_url)
+
+plt.plot(h1.keys(), h1.values(), '-r', label="hierarchical_clustering")
+plt.plot(k1.keys(), k1.values(), '-g', label="kmeans_clustering")
+plt.xlabel("Number of clusters")
+plt.ylabel("Distortion")
+plt.title("Comparion of distortion")
+plt.legend()
+plt.show()
