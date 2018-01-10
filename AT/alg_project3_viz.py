@@ -112,15 +112,67 @@ def run_example():
     #     singleton_list, 9, 5)
     # print "Displaying", len(cluster_list), "k-means clusters"
 
-    # print ca.compute_distortion(cluster_list, data_table)
+    print ca.compute_distortion(cluster_list, data_table)
 
     # draw the clusters using matplotlib or simplegui
-    if DESKTOP:
-        alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
-        # alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)  #add cluster centers
-    else:
-        # use toggle in GUI to add cluster centers
-        alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
+    # if DESKTOP:
+    #     alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
+    #     # alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)  #add cluster centers
+    # else:
+    #     # use toggle in GUI to add cluster centers
+    #     alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
 
+# questin 4
+# hier - O(n^2log^2n)
+# k-means from O(n) to O(n^2)
+
+# question 7
+# hier - 1.75163886916e+11
+# k means - 2.71254226924e+11
+
+# question 8
+""" k means produces much hier error in west coast, 
+because of initalisation of clusters in highli populated countries
+"""
+# question 9
+# hier
+
+
+def kmeans_dist(data_url):
+    """
+    Calculates distirtion of k_means for 6-20 clusters
+    """
+    res = {}
+    data_table = load_data_table(data_url)
+
+    for num_clust in range(6, 21):
+        singleton_list = []
+        for line in data_table:
+            singleton_list.append(alg_cluster.Cluster(
+                set([line[0]]), line[1], line[2], line[3], line[4]))
+        cluster_list = alg_project3_solution.kmeans_clustering(
+            singleton_list, num_clust, 5)
+        res[num_clust] = ca.compute_distortion(cluster_list, data_table)
+    return res
+
+def hier_dist(data_url):
+    """
+    Calculates distirtion of k_means for 6-20 clusters
+    """
+    res = {}
+    data_table = load_data_table(data_url)
+    singleton_list = []
+    for line in data_table:
+        singleton_list.append(alg_cluster.Cluster(
+            set([line[0]]), line[1], line[2], line[3], line[4]))
+        cluster_list = \
+        alg_project3_solution.hierarchical_clustering(singleton_list, 20)
+    res[20] = ca.compute_distortion(cluster_list, data_table)
+    for num_clust in range(19, 5, -1):
+        cluster_list = \
+        alg_project3_solution.hierarchical_clustering(cluster_list, num_clust)
+        res[num_clust] = ca.compute_distortion(cluster_list, data_table)
+    return res
 
 run_example()
+print hier_dist(DATA_111_URL)
