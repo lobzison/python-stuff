@@ -106,7 +106,7 @@ def run_example():
     # print "Displaying", len(cluster_list), "sequential clusters"
 
     cluster_list = \
-    alg_project3_solution.hierarchical_clustering(singleton_list, 9)
+        alg_project3_solution.hierarchical_clustering(singleton_list, 9)
     print "Displaying", len(cluster_list), "hierarchical clusters"
 
     # cluster_list = alg_project3_solution.kmeans_clustering(
@@ -130,6 +130,7 @@ def run_example():
 # question 7
 # hier - 1.75163886916e+11
 # k means - 2.71254226924e+11
+
 
 # question 8
 """ k means produces much hier error in west coast, 
@@ -156,6 +157,7 @@ def kmeans_dist(data_url):
         res[num_clust] = ca.compute_distortion(cluster_list, data_table)
     return res
 
+
 def hier_dist(data_url):
     """
     Calculates distirtion of k_means for 6-20 clusters
@@ -167,16 +169,18 @@ def hier_dist(data_url):
         singleton_list.append(alg_cluster.Cluster(
             set([line[0]]), line[1], line[2], line[3], line[4]))
     cluster_list = \
-    alg_project3_solution.hierarchical_clustering(singleton_list, 20)
+        alg_project3_solution.hierarchical_clustering(singleton_list, 20)
     res[20] = ca.compute_distortion(cluster_list, data_table)
 
     for num_clust in range(19, 5, -1):
         cluster_list = \
-        alg_project3_solution.hierarchical_clustering(cluster_list, num_clust)
+            alg_project3_solution.hierarchical_clustering(
+                cluster_list, num_clust)
         res[num_clust] = ca.compute_distortion(cluster_list, data_table)
     return res
 
-#run_example()
+
+# run_example()
 data_url = DATA_896_URL
 h1 = hier_dist(data_url)
 k1 = kmeans_dist(data_url)
