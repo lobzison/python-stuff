@@ -89,15 +89,15 @@ def closest_pair_strip(cluster_list, horiz_center, half_width):
     cluster_list[idx1] and cluster_list[idx2] lie
     in the strip and have minimum distance dist.
     """
-    center_area_indexes = [index for index in xrange(len(cluster_list))
+    center_area_indexes = [index for index in range(len(cluster_list))
                            if abs(cluster_list[index].horiz_center() -
                            horiz_center) < half_width]
     center_area_indexes.sort(key=lambda x: cluster_list[x].vert_center())
     size = len(center_area_indexes)
     result = (float("inf"), -1, -1)
-    for cluster_idx1 in xrange(size - 1):
-        for cluster_idx2 in xrange(cluster_idx1 + 1,
-                                   min(cluster_idx1 + 4, size)):
+    for cluster_idx1 in range(size - 1):
+        for cluster_idx2 in range(cluster_idx1 + 1,
+                                  min(cluster_idx1 + 4, size)):
             dist_clust = pair_distance(cluster_list,
                                        cluster_idx1,
                                        cluster_idx2)
