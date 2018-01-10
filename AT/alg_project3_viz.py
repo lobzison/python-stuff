@@ -14,6 +14,7 @@ import math
 import random
 import urllib2
 import alg_cluster
+import clustering_alaysis as ca
 
 # conditional imports
 if DESKTOP:
@@ -103,20 +104,21 @@ def run_example():
     # cluster_list = sequential_clustering(singleton_list, 15)
     # print "Displaying", len(cluster_list), "sequential clusters"
 
-    cluster_list = alg_project3_solution.hierarchical_clustering(singleton_list, 9)
+    cluster_list = \
+    alg_project3_solution.hierarchical_clustering(singleton_list, 9)
     print "Displaying", len(cluster_list), "hierarchical clusters"
-
+    
     # cluster_list = alg_project3_solution.kmeans_clustering(
     #     singleton_list, 9, 5)
     # print "Displaying", len(cluster_list), "k-means clusters"
-
+    print ca.compute_distortion(cluster_list, data_table)
     # draw the clusters using matplotlib or simplegui
-    if DESKTOP:
-        alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
-        # alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)  #add cluster centers
-    else:
-        # use toggle in GUI to add cluster centers
-        alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
+    # if DESKTOP:
+    #     alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)
+    #     # alg_clusters_matplotlib.plot_clusters(data_table, cluster_list, True)  #add cluster centers
+    # else:
+    #     # use toggle in GUI to add cluster centers
+    #     alg_clusters_simplegui.PlotClusters(data_table, cluster_list)
 
 
 run_example()

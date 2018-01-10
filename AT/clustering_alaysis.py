@@ -5,6 +5,7 @@ import alg_cluster
 import random
 import time
 import matplotlib.pyplot as plt
+import math
 
 
 
@@ -62,5 +63,14 @@ def plot():
     plt.legend()
     plt.show()
 
-if __name__ == "__main__":
-    plot()
+
+def compute_distortion(cluster_list, data_table):
+    """
+    Given list of cluster, computes distortion of all clusters
+    Returns a number of distortion
+    """
+    return sum((abs(cluster.cluster_error(data_table))
+                for cluster in cluster_list))
+
+# if __name__ == "__main__":
+#     plot()

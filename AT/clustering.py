@@ -99,8 +99,8 @@ def closest_pair_strip(cluster_list, horiz_center, half_width):
         for cluster_idx2 in range(cluster_idx1 + 1,
                                   min(cluster_idx1 + 4, size)):
             dist_clust = pair_distance(cluster_list,
-                                       cluster_idx1,
-                                       cluster_idx2)
+                                       center_area_indexes[cluster_idx1],
+                                       center_area_indexes[cluster_idx2])
             result = min(result, dist_clust)
     return result
 
