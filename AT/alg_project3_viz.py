@@ -160,7 +160,7 @@ def kmeans_dist(data_url):
 
 def hier_dist(data_url):
     """
-    Calculates distirtion of k_means for 6-20 clusters
+    Calculates distirtion of hierarchical alg for 6-20 clusters
     """
     res = {}
     data_table = load_data_table(data_url)
