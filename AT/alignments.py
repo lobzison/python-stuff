@@ -61,7 +61,7 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
                 a_matrix[x_ind][y_ind] = val
     return a_matrix
 
-#test2_ = compute_alignment_matrix('AA', 'TAAT', test_, True)
+#test2_ = compute_alignment_matrix('AA', 'TAAT', test_, False)
 #for line in test2_:
 #    print(line)
 
@@ -98,3 +98,32 @@ def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     return (score, x_alig, y_alig)
 #        
 #print(compute_global_alignment('AA', 'TAAT',test_, test2_))
+
+def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
+    """
+    Computes local alingment
+    Returns tuple with alignment score, anb both alignment
+    """
+    score, x_ind, y_ind = max(((scr, x, y)
+                               for x, row in enumerate(alignment_matrix)
+                               for y, scr in enumerate(row)))
+    x_alig, y_alig = "", ""
+    while x_ind != 0 and y_ind != 0:
+        if alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind - 1] + scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]:
+            x_alig = seq_x[x_ind - 1] + x_alig
+            y_alig = seq_y[y_ind - 1] + y_alig
+            x_ind -= 1
+            y_ind -= 1
+        elif alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind] + scoring_matrix[seq_x[x_ind - 1]]["-"]:
+            x_alig = seq_x[x_ind - 1] + x_alig
+            y_alig = "-" + y_alig
+            x_ind -= 1
+        else:
+            y_alig = seq_y[y_ind - 1] + y_alig
+            x_alig = "-" + x_alig
+            y_ind -= 1
+        if alignment_matrix[x_ind][y_ind] == 0:
+            break
+    return (score, x_alig, y_alig)
+#
+#print(compute_local_alignment('AA', 'TAAT',test_, test2_))
