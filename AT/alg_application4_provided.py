@@ -88,4 +88,20 @@ human_protein = read_protein(HUMAN_EYELESS_URL)
 fly_protein = read_protein(FRUITFLY_EYELESS_URL)
 a_matrix = student.compute_alignment_matrix(human_protein, fly_protein, scoring_matrix, False)
 
-print student.compute_local_alignment(human_protein, fly_protein, scoring_matrix, a_matrix)
+alignment_1 = student.compute_local_alignment(human_protein, fly_protein, scoring_matrix, a_matrix)
+print alignment_1
+pax = read_protein(CONSENSUS_PAX_URL)
+human_local = alignment_1[1]
+fly_local = alignment_1[2]
+
+human_local = human_local.replace("-", "")
+fly_local = fly_local.replace("-", "")
+
+def compute
+
+a_matrix2 = student.compute_alignment_matrix(human_local, pax, scoring_matrix, True)
+
+print student.compute_global_alignment(human_local, pax, scoring_matrix, a_matrix2)
+
+# (875, 'HSGVNQLGGVFVNGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATPEVVSKIAQYKRECPSIFAWEIRDRLLSEGVCTNDNIPSVSSINRVLRNLASEK-QQ', 'HSGVNQLGGVFVGGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATAEVVSKISQYKRECPSIFAWEIRDRLLQENVCTNDNIPSVSSINRVLRNLAAQKEQQ')
+
