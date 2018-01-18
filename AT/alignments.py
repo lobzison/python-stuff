@@ -3,6 +3,7 @@
 Computing global and loacl DNA alignments
 """
 
+
 def build_scoring_matrix(alphabet, diag_score,
                          off_diag_score, dash_score):
     """
@@ -29,13 +30,6 @@ def build_scoring_matrix(alphabet, diag_score,
         outside_dict[outside_letter] = inside_dict
     return outside_dict
 
-<<<<<<< HEAD
-# test = build_scoring_matrix("abcd", 10, 1, -1)
-
-# print test
-=======
-#test_ =  build_scoring_matrix(set(['A', 'C', 'T', 'G']), 10, 4, -6)
-#print(test_)
 
 def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
     """
@@ -58,17 +52,17 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
             a_matrix[0][y_ind] = val
     for x_ind in range(1, len_x + 1):
         for y_ind in range(1, len_y + 1):
-            val1 = a_matrix[x_ind - 1][y_ind - 1] + scoring_matrix[seq_y[y_ind - 1]][seq_x[x_ind - 1]]
-            val2 = a_matrix[x_ind - 1][y_ind] + scoring_matrix[seq_x[x_ind - 1]]["-"]
-            val3 = val = a_matrix[x_ind][y_ind - 1] + scoring_matrix["-"][seq_y[y_ind - 1]]
+            val1 = a_matrix[x_ind - 1][y_ind - 1] + \
+                scoring_matrix[seq_y[y_ind - 1]][seq_x[x_ind - 1]]
+            val2 = a_matrix[x_ind - 1][y_ind] + \
+                scoring_matrix[seq_x[x_ind - 1]]["-"]
+            val3 = val = a_matrix[x_ind][y_ind - 1] + \
+                scoring_matrix["-"][seq_y[y_ind - 1]]
             val = max(val1, val2, val3)
             if global_flag or val > 0:
                 a_matrix[x_ind][y_ind] = val
     return a_matrix
 
-#test2_ = compute_alignment_matrix('AA', 'TAAT', test_, False)
-#for line in test2_:
-#    print(line)
 
 def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     """
@@ -79,12 +73,16 @@ def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     x_alig, y_alig = "", ""
     score = alignment_matrix[x_ind][y_ind]
     while x_ind != 0 and y_ind != 0:
-        if alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind - 1] + scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]:
+        if (alignment_matrix[x_ind][y_ind] ==
+            alignment_matrix[x_ind - 1][y_ind - 1] +
+                scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]):
             x_alig = seq_x[x_ind - 1] + x_alig
             y_alig = seq_y[y_ind - 1] + y_alig
             x_ind -= 1
             y_ind -= 1
-        elif alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind] + scoring_matrix[seq_x[x_ind - 1]]["-"]:
+        elif (alignment_matrix[x_ind][y_ind] ==
+              alignment_matrix[x_ind - 1][y_ind] +
+              scoring_matrix[seq_x[x_ind - 1]]["-"]):
             x_alig = seq_x[x_ind - 1] + x_alig
             y_alig = "-" + y_alig
             x_ind -= 1
@@ -101,8 +99,7 @@ def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
         x_alig = "-" + x_alig
         y_ind -= 1
     return (score, x_alig, y_alig)
-#        
-#print(compute_global_alignment('AA', 'TAAT',test_, test2_))
+
 
 def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
     """
@@ -114,12 +111,16 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
                                for y, scr in enumerate(row)))
     x_alig, y_alig = "", ""
     while x_ind != 0 and y_ind != 0:
-        if alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind - 1] + scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]:
+        if (alignment_matrix[x_ind][y_ind] ==
+            alignment_matrix[x_ind - 1][y_ind - 1] +
+                scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]):
             x_alig = seq_x[x_ind - 1] + x_alig
             y_alig = seq_y[y_ind - 1] + y_alig
             x_ind -= 1
             y_ind -= 1
-        elif alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind] + scoring_matrix[seq_x[x_ind - 1]]["-"]:
+        elif (alignment_matrix[x_ind][y_ind] ==
+              alignment_matrix[x_ind - 1][y_ind] +
+              scoring_matrix[seq_x[x_ind - 1]]["-"]):
             x_alig = seq_x[x_ind - 1] + x_alig
             y_alig = "-" + y_alig
             x_ind -= 1
@@ -130,6 +131,3 @@ def compute_local_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
         if alignment_matrix[x_ind][y_ind] == 0:
             break
     return (score, x_alig, y_alig)
-#
-#print(compute_local_alignment('AA', 'TAAT',test_, test2_))
->>>>>>> 52ad68d944ee8b58f14bd075ddca5d62169ca056
