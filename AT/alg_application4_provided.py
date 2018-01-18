@@ -82,3 +82,10 @@ def read_words(filename):
     word_list = words.split('\n')
     print "Loaded a dictionary with", len(word_list), "words"
     return word_list
+
+scoring_matrix = read_scoring_matrix(PAM50_URL)
+human_protein = read_protein(HUMAN_EYELESS_URL)
+fly_protein = read_protein(FRUITFLY_EYELESS_URL)
+a_matrix = student.compute_alignment_matrix(human_protein, fly_protein, scoring_matrix, False)
+
+print student.compute_local_alignment(human_protein, fly_protein, scoring_matrix, a_matrix)
