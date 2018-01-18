@@ -97,11 +97,26 @@ fly_local = alignment_1[2]
 human_local = human_local.replace("-", "")
 fly_local = fly_local.replace("-", "")
 
-def compute
 
-a_matrix2 = student.compute_alignment_matrix(human_local, pax, scoring_matrix, True)
+def compute_percentage(local, pax):
+    """
+    Computes percentage of same characters in
+    globabl alignment of local and pax
+    """
+    a_matrix = student.compute_alignment_matrix(local,
+                                                pax, scoring_matrix, True)
+    alig = student.compute_global_alignment(local,
+                                            pax, scoring_matrix, a_matrix)
+    total = 0
+    same = 0
+    for index in range(len(alig[1])):
+        total += 1
+        if alig[1][index] == alig[2][index]:
+            same +=1
+    return float(same) / total
 
-print student.compute_global_alignment(human_local, pax, scoring_matrix, a_matrix2)
+print compute_percentage(human_local, pax)
+print compute_percentage(fly_local, pax)
 
 # (875, 'HSGVNQLGGVFVNGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATPEVVSKIAQYKRECPSIFAWEIRDRLLSEGVCTNDNIPSVSSINRVLRNLASEK-QQ', 'HSGVNQLGGVFVGGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATAEVVSKISQYKRECPSIFAWEIRDRLLQENVCTNDNIPSVSSINRVLRNLAAQKEQQ')
 
