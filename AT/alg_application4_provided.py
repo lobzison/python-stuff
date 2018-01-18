@@ -10,11 +10,11 @@ import urllib2
 
 if DESKTOP:
     import matplotlib.pyplot as plt
-    import alg_project4_solution as student
+    import alignments as student
 else:
     import simpleplot
     import userXX_XXXXXXX as student
-    
+
 
 # URLs for data files
 PAM50_URL = "http://storage.googleapis.com/codeskulptor-alg/alg_PAM50.txt"
@@ -24,13 +24,12 @@ CONSENSUS_PAX_URL = "http://storage.googleapis.com/codeskulptor-alg/alg_Consensu
 WORD_LIST_URL = "http://storage.googleapis.com/codeskulptor-assets/assets_scrabble_words3.txt"
 
 
-
 ###############################################
 # provided code
 
 def read_scoring_matrix(filename):
     """
-    Read a scoring matrix from the file named filename.  
+    Read a scoring matrix from the file named filename.
 
     Argument:
     filename -- name of file containing a scoring matrix
@@ -49,8 +48,6 @@ def read_scoring_matrix(filename):
         for ykey, val in zip(ykeychars, vals):
             scoring_dict[xkey][ykey] = int(val)
     return scoring_dict
-
-
 
 
 def read_protein(filename):
@@ -77,14 +74,11 @@ def read_words(filename):
     """
     # load assets
     word_file = urllib2.urlopen(filename)
-    
+
     # read in files as string
     words = word_file.read()
-    
+
     # template lines and solution lines list of line string
     word_list = words.split('\n')
     print "Loaded a dictionary with", len(word_list), "words"
     return word_list
-
-
-
