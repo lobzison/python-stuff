@@ -29,7 +29,7 @@ def build_scoring_matrix(alphabet, diag_score,
         outside_dict[outside_letter] = inside_dict
     return outside_dict
 
-#test_ =  build_scoring_matrix(set(['A', 'C', 'T', 'G']), 6, 2, -4)
+#test_ =  build_scoring_matrix(set(['A', 'C', 'T', 'G']), 10, 4, -6)
 #print(test_)
 
 def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
@@ -39,7 +39,7 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
     """
     len_x = len(seq_x)
     len_y = len(seq_y)
-    a_matrix = [] 
+    a_matrix = []
     for _ in range(len_x + 1):
         a_matrix.append([0 for _ in range(len_y + 1)])
     a_matrix[0][0] = 0
@@ -61,7 +61,40 @@ def compute_alignment_matrix(seq_x, seq_y, scoring_matrix, global_flag):
                 a_matrix[x_ind][y_ind] = val
     return a_matrix
 
-#test2_ = compute_alignment_matrix('AA', 'TAAT', test_, False)
-#
-#for x in test2:
-#    print(x)
+#test2_ = compute_alignment_matrix('AA', 'TAAT', test_, True)
+#for line in test2_:
+#    print(line)
+
+def compute_global_alignment(seq_x, seq_y, scoring_matrix, alignment_matrix):
+    """
+    Computes global alingment
+    Returns tuple with alignment score, anb both alignment
+    """
+    x_ind, y_ind = len(seq_x), len(seq_y)
+    x_alig, y_alig = "", ""
+    score = alignment_matrix[x_ind][y_ind]
+    while x_ind != 0 and y_ind != 0:
+        if alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind - 1] + scoring_matrix[seq_x[x_ind - 1]][seq_y[y_ind - 1]]:
+            x_alig = seq_x[x_ind - 1] + x_alig
+            y_alig = seq_y[y_ind - 1] + y_alig
+            x_ind -= 1
+            y_ind -= 1
+        elif alignment_matrix[x_ind][y_ind] == alignment_matrix[x_ind - 1][y_ind] + scoring_matrix[seq_x[x_ind - 1]]["-"]:
+            x_alig = seq_x[x_ind - 1] + x_alig
+            y_alig = "-" + y_alig
+            x_ind -= 1
+        else:
+            y_alig = seq_y[y_ind - 1] + y_alig
+            x_alig = "-" + x_alig
+            y_ind -= 1
+    while x_ind != 0:
+        x_alig = seq_x[x_ind - 1] + x_alig
+        y_alig = "-" + y_alig
+        x_ind -= 1
+    while y_ind != 0:
+        y_alig = seq_y[y_ind - 1] + y_alig
+        x_alig = "-" + x_alig
+        y_ind -= 1
+    return (score, x_alig, y_alig)
+#        
+#print(compute_global_alignment('AA', 'TAAT',test_, test2_))
