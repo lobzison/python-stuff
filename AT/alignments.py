@@ -27,6 +27,6 @@ def build_scoring_matrix(alphabet, diag_score,
         outside_dict[outside_letter] = inside_dict
     return outside_dict
 
-test = build_scoring_matrix("abcd", 10, 1, -1)
+# test = build_scoring_matrix("abcd", 10, 1, -1)
 
-print test
+# print test
