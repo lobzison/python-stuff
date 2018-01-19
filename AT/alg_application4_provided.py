@@ -7,6 +7,7 @@ DESKTOP = True
 import math
 import random
 import urllib2
+import string
 
 if DESKTOP:
     import matplotlib.pyplot as plt
@@ -173,10 +174,47 @@ def show_hist(dist):
     plt.xlabel("Maximum score in permutation matrix")
     plt.ylabel("Normalized appearence")
     plt.title("Distirbution of maximum scores in permutation matrix"
-              +" for 1000 attempst, radomizing oreder in human sequence")
+              + " for 1000 attempst, radomizing oreder in human sequence")
     plt.show()
 
     return total
 
-print show_hist(null_distibution)
+def z_score(dist, num):
+    """
+    Calculates z score for distribution
+    """
+    mu = float(sum((key * val for (key, val)
+                    in zip(dist.keys(),
+                           dist.values())))) / 1000
 
+    # print show_hist(dist)
+    print mu
+    sigma = math.sqrt(float(sum(((key - mu) ** 2) * val for (key, val)
+                                in zip(dist.keys(),
+                                       dist.values()))) / 1000)
+
+    print sigma
+    return (num - mu) / sigma
+
+print z_score(null_distibution, 875)
+
+words = read_words(WORD_LIST_URL)
+def check_spelling(checked_word, dist, word_list):
+    """
+    Simple and stupid autocorrect
+    """
+    result = set([])
+    scoring_matrix = student.build_scoring_matrix(set(list(string.ascii_lowercase)), 2, 1, 0)
+    set_words = set(word_list)
+    for word in set_words:
+        alignment_matrix = student.compute_alignment_matrix(
+            word, checked_word, scoring_matrix, True)
+        permutation_score = student.compute_global_alignment(
+            word, checked_word, scoring_matrix, alignment_matrix)[0]
+        distance = len(checked_word) + len(word) - permutation_score
+        if distance <= dist:
+            result.add(word)
+    return result
+
+print check_spelling("humble", 1, words)
+print check_spelling("firefly", 2, words)
