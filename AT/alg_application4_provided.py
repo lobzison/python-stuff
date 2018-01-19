@@ -125,3 +125,34 @@ print compute_percentage(fly_local, pax)
 # 1/23 for sybols to be exactly the same
 
 print (1.0 / 23) ** 70
+
+
+def generate_null_distribution(seq_x, seq_y, scoring_matrix, num_trials):
+    """
+    Generates unnormalized distribution of permutations of maximum scores of local gene alignments
+    """
+    scoring_distribution = {}
+    for _ in range(num_trials):
+        print("Start")
+        y_lst = list(seq_y)
+        random.shuffle(y_lst)
+        rand_y = ''.join(y_lst)
+        print("shuffled")
+        alignment_matrix = student.compute_alignment_matrix(
+            seq_x, rand_y, scoring_matrix, False)
+        print("alig_matrix")
+        permutation_score = student.compute_local_alignment(
+            seq_x, rand_y, scoring_matrix, alignment_matrix)[0]
+        print("permutation score")
+        if scoring_distribution.get(permutation_score) is None:
+            scoring_distribution[permutation_score] = 1
+        else:
+            scoring_distribution[permutation_score] += 1
+        print("added")
+        print _
+    return scoring_distribution
+
+
+null_distibution = {37: 1, 38: 1, 39: 4, 40: 13, 41: 14, 42: 19, 43: 31, 44: 37, 45: 60, 46: 51, 47: 67, 48: 69, 49: 60, 50: 56, 51: 65, 52: 62, 53: 48, 54: 55, 55: 45, 56: 32, 57: 34,
+                    58: 27, 59: 22, 60: 17, 61: 16, 62: 20, 63: 16, 64: 10, 65: 11, 66: 8, 67: 3, 68: 8, 69: 3, 70: 1, 71: 3, 72: 2, 73: 1, 74: 1, 75: 1, 77: 1, 79: 1, 84: 1, 86: 1, 87: 1, 89: 1}
+
