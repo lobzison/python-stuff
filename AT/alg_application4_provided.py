@@ -83,12 +83,15 @@ def read_words(filename):
     print "Loaded a dictionary with", len(word_list), "words"
     return word_list
 
+
 scoring_matrix = read_scoring_matrix(PAM50_URL)
 human_protein = read_protein(HUMAN_EYELESS_URL)
 fly_protein = read_protein(FRUITFLY_EYELESS_URL)
-a_matrix = student.compute_alignment_matrix(human_protein, fly_protein, scoring_matrix, False)
+a_matrix = student.compute_alignment_matrix(
+    human_protein, fly_protein, scoring_matrix, False)
 
-alignment_1 = student.compute_local_alignment(human_protein, fly_protein, scoring_matrix, a_matrix)
+alignment_1 = student.compute_local_alignment(
+    human_protein, fly_protein, scoring_matrix, a_matrix)
 print alignment_1
 pax = read_protein(CONSENSUS_PAX_URL)
 human_local = alignment_1[1]
@@ -112,9 +115,10 @@ def compute_percentage(local, pax):
     for index in range(len(alig[1])):
         total += 1
         if alig[1][index] == alig[2][index]:
-            same +=1
+            same += 1
     print total
     return float(same) / total
+
 
 print compute_percentage(human_local, pax)
 print compute_percentage(fly_local, pax)
@@ -129,7 +133,8 @@ print (1.0 / 23) ** 70
 
 def generate_null_distribution(seq_x, seq_y, scoring_matrix, num_trials):
     """
-    Generates unnormalized distribution of permutations of maximum scores of local gene alignments
+    Generates unnormalized distribution of permutations
+    of maximum scores of local gene alignments
     """
     scoring_distribution = {}
     for _ in range(num_trials):
@@ -155,4 +160,23 @@ def generate_null_distribution(seq_x, seq_y, scoring_matrix, num_trials):
 
 null_distibution = {37: 1, 38: 1, 39: 4, 40: 13, 41: 14, 42: 19, 43: 31, 44: 37, 45: 60, 46: 51, 47: 67, 48: 69, 49: 60, 50: 56, 51: 65, 52: 62, 53: 48, 54: 55, 55: 45, 56: 32, 57: 34,
                     58: 27, 59: 22, 60: 17, 61: 16, 62: 20, 63: 16, 64: 10, 65: 11, 66: 8, 67: 3, 68: 8, 69: 3, 70: 1, 71: 3, 72: 2, 73: 1, 74: 1, 75: 1, 77: 1, 79: 1, 84: 1, 86: 1, 87: 1, 89: 1}
+
+
+def show_hist(dist):
+    """
+    Plots a histogramm of distribution
+    """
+    total = sum(dist.values())
+    weighted_dist = {key: float(val) / total for (key, val)
+                     in zip(dist.keys(), dist.values())}
+    plt.bar(weighted_dist.keys(), weighted_dist.values())
+    plt.xlabel("Maximum score in permutation matrix")
+    plt.ylabel("Normalized appearence")
+    plt.title("Distirbution of maximum scores in permutation matrix"
+              +" for 1000 attempst, radomizing oreder in human sequence")
+    plt.show()
+
+    return total
+
+print show_hist(null_distibution)
 
