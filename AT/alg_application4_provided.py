@@ -113,10 +113,15 @@ def compute_percentage(local, pax):
         total += 1
         if alig[1][index] == alig[2][index]:
             same +=1
+    print total
     return float(same) / total
 
 print compute_percentage(human_local, pax)
 print compute_percentage(fly_local, pax)
 
 # (875, 'HSGVNQLGGVFVNGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATPEVVSKIAQYKRECPSIFAWEIRDRLLSEGVCTNDNIPSVSSINRVLRNLASEK-QQ', 'HSGVNQLGGVFVGGRPLPDSTRQKIVELAHSGARPCDISRILQVSNGCVSKILGRYYETGSIRPRAIGGSKPRVATAEVVSKISQYKRECPSIFAWEIRDRLLQENVCTNDNIPSVSSINRVLRNLAAQKEQQ')
+# 133 position, 23 sybols
 
+# 1/23 for sybols to be exactly the same
+
+print (1.0 / 23) ** 70
