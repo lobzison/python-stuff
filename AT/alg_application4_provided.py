@@ -117,6 +117,7 @@ def compute_percentage(local, pax):
         total += 1
         if alig[1][index] == alig[2][index]:
             same += 1
+    print same
     print total
     return float(same) / total
 
@@ -188,12 +189,13 @@ def z_score(dist, num):
                            dist.values())))) / 1000
 
     # print show_hist(dist)
-    print mu
+    print "mean is: " + str(mu)
     sigma = math.sqrt(float(sum(((key - mu) ** 2) * val for (key, val)
                                 in zip(dist.keys(),
                                        dist.values()))) / 1000)
 
-    print sigma
+    print "standart is: " + str(sigma)
+    print "tripple st dev:" + str(mu + 3 * sigma)
     return (num - mu) / sigma
 
 print z_score(null_distibution, 875)
