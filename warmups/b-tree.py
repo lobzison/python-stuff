@@ -12,13 +12,21 @@ class Node:
         self._keys = []
         self._children = []
 
+    @property
     def is_leaf(self):
         """If node is leaf return true, othervise - return false"""
         return self._is_leaf
 
     def add_key(self, key):
+        """Adds key to the keys"""
         self._keys.append(key)
         self._keys.sort()
+
+    def is_full(self):
+        """Returns True if node is full"""
+        return len(self._keys) >= 2 * self._t - 1
+            
+    
 
 my_node = Node(3)
 for num in range(10):
