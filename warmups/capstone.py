@@ -199,3 +199,6 @@ rpsls("scissors")
 crazy = [1, 1]
 crazy = crazy[1]
 print(crazy)
+
+
+print((1/6) ** 5)
