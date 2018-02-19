@@ -202,3 +202,20 @@ print(crazy)
 
 
 print((1/6) ** 5)
+
+def probability(outcomes):
+    """
+    Computes probabiliti of outcomes sequence
+    with hardcoded chanches
+    The die has a 0.1 probability of landing on 1, a 0.2 probability of landing on 2,
+     a 0.3 probability of landing on 3, a 0.15 probability of landing on 4,
+      a 0.05 probability of landing on 5, and a 0.2 probability of landing on 6.
+    """
+    chances = {1: 0.1, 2: 0.2, 3: 0.3, 4: 0.15, 5: 0.05, 6: 0.2}
+    result = 1
+    for outcome in outcomes:
+        result *= chances[outcome]
+    return result
+
+print(probability([4, 2, 6, 4, 2, 4, 5, 5, 5, 5, 1, 2, 6, 2, 6, 6, 4, 6, 2, 3, 5, 5, 2,
+                   1, 5, 5, 3, 2, 1, 4, 4, 1, 6, 6, 4, 6, 2, 4, 3, 2, 5, 1, 3, 5, 4, 1, 2, 3, 6, 1]))
