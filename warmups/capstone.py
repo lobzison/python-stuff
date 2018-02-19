@@ -194,3 +194,8 @@ rpsls("lizard")
 rpsls("scissors")
 
 # always remember to check your completed program against the grading rubric
+
+
+crazy = [1, 1]
+crazy = crazy[1]
+print(crazy)
