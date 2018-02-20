@@ -243,11 +243,25 @@ def pick_a_number(board, player):
     """
     if len(board) == 0:
         return (0, 0)
-    score1 = pick_a_number(board[1:],  (player + 1) %2) + board[0]
-    print(score1)
-    score2 = pick_a_number(board[-1:], (player + 1) %2) + board[-1]
-    print(score1, score2)
-    score = max(score1, score2 ,key=lambda x:x[player])
+    if len(board) == 1:
+        if player == 0:
+            return (board[0], 0)
+        else:
+            return(0, board[0])
+    print(board)
+    scores1 = pick_a_number(board[1:],  (player + 1) %2)
+    if player == 0:
+        upd_scores1 = (scores1[0] + board[0], scores1[1])
+    else:
+        upd_scores1 = (scores1[0], scores1[1] + board[0])
+
+    scores2 = pick_a_number(board[-1:], (player + 1) %2)
+    if player == 0:
+        upd_scores2 = (scores2[0] + board[-1], scores2[1])
+    else:
+        upd_scores2 = (scores2[0], scores2[1] + board[-1])
+
+    score = max(upd_scores1, upd_scores2 ,key=lambda x:x[player])
     return score
     
-print(pick_a_number([3, 5, 2, 1], 0))
+print(pick_a_number([12, 9, 7, 3, 4, 7, 4, 3, 16, 4, 8, 12, 1, 2, 7, 11, 6, 3, 9, 7, 1], 1))
