@@ -230,3 +230,16 @@ print(probability([4, 2, 6, 4, 2, 4, 5, 5, 5, 5, 1, 2, 6, 2, 6, 6, 4, 6, 2, 3, 5
 # 10, 13, 20, 17, 4, 7, 12, 19, 23, 5, 1, 0, 2
 
 # 20, 13, 10, 17, 19, 7, 12, 4, 23, 1, 5, 2, 0
+
+def pick_a_number(board):
+    """
+    takes a list representing the game board and returns 
+    a tuple that is the score of the game if both players
+    play optimally. Here, optimal play means that the player
+    maximizes his/her final score. The returned tuple should
+    be ordered with the current player's score first and the
+    other player's score second.
+    """
+    scores = (0, 0)
+    if len(board) == 0:
+        return scores
