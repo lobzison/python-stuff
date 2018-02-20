@@ -264,8 +264,7 @@ def pick_a_number(board, player):
     score = max(upd_scores1, upd_scores2 ,key=lambda x:x[player])
     return score
     
-# print(pick_a_number([12, 9, 7, 3, 4, 7, 4, 3, 16, 4, 8, 12, 1, 2, 7, 11, 6, 3, 9, 7, 1], 1))
+# print(pick_a_number([12, 9, 7, 3, 4, 7, 4, 3, 16, 4, 8, 12, 1, 2, 7, 11, 6, 3, 9, 7, 1], 0))
 
-
-print(pick_a_number([3, 5, 2, 1], 0))
-print([3, 5, 2, 1][:-1], [3, 5, 2, 1][1:])
+print(pick_a_number([12, 9, 7, 3, 4, 7, 4, 3, 16, 4, 8, 12, 1, 2, 7, 11, 6, 3, 9, 7, 1], 0))
+# print([3, 5, 2, 1][:-1], [3, 5, 2, 1][1:])
