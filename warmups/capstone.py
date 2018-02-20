@@ -240,6 +240,6 @@ def pick_a_number(board):
     be ordered with the current player's score first and the
     other player's score second.
     """
-    scores = (0, 0)
     if len(board) == 0:
-        return scores
+        return (0, 0)
+    turn = 0
