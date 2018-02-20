@@ -231,7 +231,8 @@ print(probability([4, 2, 6, 4, 2, 4, 5, 5, 5, 5, 1, 2, 6, 2, 6, 6, 4, 6, 2, 3, 5
 
 # 20, 13, 10, 17, 19, 7, 12, 4, 23, 1, 5, 2, 0
 
-def pick_a_number(board):
+print('-'*30)
+def pick_a_number(board, player):
     """
     takes a list representing the game board and returns 
     a tuple that is the score of the game if both players
@@ -242,4 +243,11 @@ def pick_a_number(board):
     """
     if len(board) == 0:
         return (0, 0)
-    turn = 0
+    score1 = pick_a_number(board[1:],  (player + 1) %2) + board[0]
+    print(score1)
+    score2 = pick_a_number(board[-1:], (player + 1) %2) + board[-1]
+    print(score1, score2)
+    score = max(score1, score2 ,key=lambda x:x[player])
+    return score
+    
+print(pick_a_number([3, 5, 2, 1], 0))
