@@ -8,7 +8,7 @@ Rouge have 20% chance to dodge attacks. If rouge successfully dodges, he takes 0
 import random
 # define Warrior, Mage and Rouge as dictionaries
 # all classes have key "class" with appropriate string for class name, key "HP", "MP", "Damage"
-# all classes have 100 hp, 100 mp and 10 damage if not statet otherwise
+# all classes have 100 hp, 100 mp and 10 damage if not stated otherwise
 # Warrior have 20% more hp than default value
 # Mage have additional key "ES" witch equals 20
 # Rouge have additional key "Dodge" witch equals 0.2
